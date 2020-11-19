@@ -9,6 +9,8 @@ import java.awt.*;
  */
 public class Window extends JFrame {
 
+    private final ImageIcon ICON = new ImageIcon("src/main/resources/logo.png");
+
     public Window() {
         initWindow();
         this.add(new Title());
@@ -20,13 +22,8 @@ public class Window extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("Checkers : Menu");
         this.getContentPane().setBackground(new Color(0xE0E0E0));
-        this.setIcon();
+        this.setIconImage(ICON.getImage());
         this.setVisible(true);
-    }
-
-    private void setIcon() {
-        ImageIcon icon = new ImageIcon("src/main/resources/logo.png");
-        this.setIconImage(icon.getImage());
     }
 
 }
