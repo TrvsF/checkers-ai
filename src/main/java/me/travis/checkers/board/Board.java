@@ -2,24 +2,17 @@ package me.travis.checkers.board;
 
 /*
  * class for holding all the information on the board, including the board itself
+ * this doesn't really *have* to be a class, but its a lot nicer to have the board object in its own space
  */
 public class Board {
 
-    private final Man[][] board;
-
-    public Board() {
-        this.board = createBoard();
-    }
-
-    public Man[][] getBoard() {
-        return this.board;
-    }
+    public static final Man[][] BOARD = createBoard();
 
     /*
      * create the initial state of the board
      * populates a 2d array of 'Man' objects and assigns them their correct starting positions
      */
-    private Man[][] createBoard() {
+    private static Man[][] createBoard() {
         Man[][] board = new Man[8][];
         for (int i = 0; i < 8; i++) {
             board[i] = new Man[8];
@@ -44,8 +37,8 @@ public class Board {
      * prints out the board to the console
      * used for debugging (hence the name)
      */
-    public void printDebugBoard() {
-        for (Man[] men : this.board) {
+    public static void printDebugBoard() {
+        for (Man[] men : BOARD) {
             for (Man man : men) {
                 System.out.print(man.getId());
             }
