@@ -1,4 +1,4 @@
-package me.travis.checkers.pieces;
+package me.travis.checkers.board;
 
 public class Man {
 
