@@ -1,5 +1,9 @@
 package me.travis.checkers.board;
 
+/*
+ * class used to hold the information on each piece
+ * called man bc the wiki referred to the pieces of a checkers game as 'men'
+ */
 public class Man {
 
     private final int id;

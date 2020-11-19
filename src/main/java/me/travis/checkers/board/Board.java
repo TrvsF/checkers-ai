@@ -1,5 +1,8 @@
 package me.travis.checkers.board;
 
+/*
+ * class for holding all the information on the board, including the board itself
+ */
 public class Board {
 
     private final Man[][] board;
@@ -12,6 +15,10 @@ public class Board {
         return this.board;
     }
 
+    /*
+     * create the initial state of the board
+     * populates a 2d array of 'Man' objects and assigns them their correct starting positions
+     */
     private Man[][] createBoard() {
         Man[][] board = new Man[8][];
         for (int i = 0; i < 8; i++) {
@@ -33,6 +40,10 @@ public class Board {
         return board;
     }
 
+    /*
+     * prints out the board to the console
+     * used for debugging (hence the name)
+     */
     public void printDebugBoard() {
         for (Man[] men : this.board) {
             for (Man man : men) {
