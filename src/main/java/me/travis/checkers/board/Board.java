@@ -6,7 +6,7 @@ package me.travis.checkers.board;
  */
 public class Board {
 
-    public static final Man[][] BOARD = createBoard();
+    public static Man[][] BOARD = createBoard();
 
     /*
      * create the initial state of the board
@@ -40,7 +40,7 @@ public class Board {
     public static void printDebugBoard() {
         for (Man[] men : BOARD) {
             for (Man man : men) {
-                System.out.print(man.getId());
+                System.out.print(man.getTeam());
             }
             System.out.print("\n");
         }

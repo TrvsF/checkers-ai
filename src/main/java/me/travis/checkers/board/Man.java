@@ -6,17 +6,17 @@ package me.travis.checkers.board;
  */
 public class Man {
 
-    private final int id;
+    private final int team;
     private boolean isKing;
     // TODO : LINK TO IMG
 
-    public Man(int id) {
-        this.id = id;
+    public Man(int team) {
+        this.team = team;
         this.isKing = false;
     }
 
-    public int getId() {
-        return this.id;
+    public int getTeam() {
+        return this.team;
     }
 
     public boolean isKing() {
