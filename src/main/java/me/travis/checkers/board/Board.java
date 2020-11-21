@@ -8,9 +8,10 @@ public class Board {
 
     public static Man[][] BOARD = createBoard();
 
-    /*
+    /**
      * create the initial state of the board
      * populates a 2d array of 'Man' objects and assigns them their correct starting positions
+     * @return the board object
      */
     private static Man[][] createBoard() {
         Man[][] board = new Man[8][];

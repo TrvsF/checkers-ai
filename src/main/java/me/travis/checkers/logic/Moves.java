@@ -17,18 +17,19 @@ public class Moves {
     // list of moves object, a list of all the possible moves, contains their x, y, and if the jump is 'deadly'
     private static final List<Tuple<Integer, Integer, Boolean>> LIST_OF_MOVES = new ArrayList<>();
 
-    /*
-     * checks if two pieces on the board may move
-     * returns true if so, false if not
+    /**
+     * checks if a piece can move to another and adds the move to the list of valid moves
+     * @param x1 X of moving piece
+     * @param y1 Y of moving piece
+     * @param x2 X of spot to check
+     * @param y2 Y of spot to check
+     * @return if a give piece can move to another coordinate
      */
     public static boolean canMove(int x1, int y1, int x2, int y2) {
 
-        // should never happen, jic
-        if (x1 < 0 || x1 > 8) return false;
-        if (y1 < 0 || y1 > 8) return false;
-        // more likely to happen, so we dont get an oob error
-        if (x2 < 0 || x2 > 8) return false;
-        if (y2 < 0 || y2 > 8) return false;
+        if (isOutOfBounds(x1) || isOutOfBounds(x2) || isOutOfBounds(y1) || isOutOfBounds(y2)) {
+            return false;
+        }
 
         int teamToMove = Board.BOARD[x1][y1].getTeam();
         int teamToMoveTo = Board.BOARD[x2][y2].getTeam();
@@ -43,21 +44,43 @@ public class Moves {
         return teamToMoveTo == teamToMove * -1 && canJump(x1, y1, x2, y2);
     }
 
-    /*
-     * returns true if a given piece can jump over another and land 'safely'
-     * also adds this move to the list of current moves for that piece
+    /**
+     * checks if a piece can jump over another and adds the move to the list of valid moves
+     * @param x1 X of moving piece
+     * @param y1 Y of moving piece
+     * @param x2 X of the piece to be jumped
+     * @param y2 Y of the piece to be jumped
+     * @return if it is possible for the piece to be jumped
      */
     private static boolean canJump(int x1, int y1, int x2, int y2) {
         int x3 = (x2 - x1) + x2;
         int y3 = (y2 - y1) + y2;
+
+        if (isOutOfBounds(x3) || isOutOfBounds(y3)) {
+            return false;
+        }
+
         if (Board.BOARD[x3][y3].getTeam() == 0) {
             LIST_OF_MOVES.add(Tuple.create(x3, y3, true));
             return true;
         } return false;
     }
 
-    /*
-     * moves two pieces of the board
+    /**
+     * @param i given coordinate
+     * @return if a given coordinate will be out of bounds of the board
+     */
+    private static boolean isOutOfBounds(int i) {
+        return i < 0 || i > 8;
+    }
+
+    /**
+     * moves a piece of the board
+     * @param x1 starting X
+     * @param y1 starting Y
+     * @param x2 end X
+     * @param y2 end Y
+     * @throws ArrayIndexOutOfBoundsException
      */
     public static void movePieces(int x1, int y1, int x2, int y2) throws ArrayIndexOutOfBoundsException {
         Man temp = Board.BOARD[x1][y1];
@@ -65,8 +88,11 @@ public class Moves {
         Board.BOARD[x2][y2] = temp;
     }
 
-    /*
-     * gets all the valid moves for a give piece via coordinates on the board
+    /**
+     * gets all valid moves for a given coordinate
+     * @param x X
+     * @param y Y
+     * @return a list of moves (x, y, if the move is deadly [kills another piece])
      */
     public static List<Tuple<Integer, Integer, Boolean>> getMoves(int x, int y) {
         LIST_OF_MOVES.clear();
@@ -91,8 +117,10 @@ public class Moves {
         return LIST_OF_MOVES;
     }
 
-    /*
-     * prints the found moves to the console
+    /**
+     * prints all the moves for a given piece to console
+     * @param x X
+     * @param y Y
      */
     public static void getMovesDebug(int x, int y) {
         List<Tuple<Integer, Integer, Boolean>> moves = getMoves(x, y);
