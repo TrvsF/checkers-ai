@@ -1,6 +1,7 @@
 package me.travis.checkers;
 
 import me.travis.checkers.board.Board;
+import me.travis.checkers.board.Man;
 import me.travis.checkers.gui.Window;
 import me.travis.checkers.logic.Moves;
 
@@ -13,7 +14,8 @@ public class Checkers {
         System.out.println("STARTING CHECKERS...");
         Board.printDebugBoard();
         Window window = new Window();
-        Moves.getMovesDebug(0, 0);
+        Board.BOARD[3][2] = new Man(1);
+        Moves.getMovesDebug(2, 1);
     }
 
 }

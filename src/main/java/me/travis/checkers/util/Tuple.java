@@ -1,13 +1,18 @@
 package me.travis.checkers.util;
 
+/*
+ * tuple class, holds 3 elements of any datatype
+ * (like a list or array but easy to use and more efficient)
+ */
 public class Tuple<E1, E2, E3> {
 
     private final E1 element1;
     private final E2 element2;
     private final E3 element3;
 
-    public static <e1, e2, e3> Tuple<e1, e2, e3> createPair(e1 element1, e2 element2, e3 element3) {
-        return new Tuple<e1, e2, e3>(element1, element2, element3);
+    // creates a tuple
+    public static <e1, e2, e3> Tuple<e1, e2, e3> create(e1 element1, e2 element2, e3 element3) {
+        return new Tuple<>(element1, element2, element3);
     }
 
     public Tuple(E1 element1, E2 element2, E3 element3) {

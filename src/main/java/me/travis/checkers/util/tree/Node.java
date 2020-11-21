@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/*
+ * node class for the game theory tree
+ * TODO : create a rating system that isnt completely shite
+ */
 public class Node {
 
     private final int[][] value;

@@ -18,11 +18,7 @@ public class Title extends JLabel {
 
     private void initTitle() {
         this.setIcon(TITLE);
-        this.setText("made by travis");
-        this.setVerticalAlignment(this.TOP);
-        this.setHorizontalAlignment(this.CENTER);
-        this.setVerticalTextPosition(this.BOTTOM);
-        this.setHorizontalTextPosition(this.CENTER);
+        this.setBounds(240, 20, 480, 120);
         this.setBorder(BORDER);
     }
 

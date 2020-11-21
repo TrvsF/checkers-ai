@@ -35,7 +35,7 @@ public class Moves {
 
         // if the spot if vacant add to list of return true
         if (teamToMoveTo == 0) {
-            LIST_OF_MOVES.add(Tuple.createPair(x2, y2, false));
+            LIST_OF_MOVES.add(Tuple.create(x2, y2, false));
             return true;
         }
 
@@ -48,10 +48,10 @@ public class Moves {
      * also adds this move to the list of current moves for that piece
      */
     private static boolean canJump(int x1, int y1, int x2, int y2) {
-        int x3 = (x2 - x1) * 2;
-        int y3 = (y2 - y1) * 2;
+        int x3 = (x2 - x1) + x2;
+        int y3 = (y2 - y1) + y2;
         if (Board.BOARD[x3][y3].getTeam() == 0) {
-            LIST_OF_MOVES.add(Tuple.createPair(x3, y3, true));
+            LIST_OF_MOVES.add(Tuple.create(x3, y3, true));
             return true;
         } return false;
     }
