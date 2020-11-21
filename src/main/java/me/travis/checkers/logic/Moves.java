@@ -5,6 +5,7 @@ import me.travis.checkers.board.Man;
 import me.travis.checkers.util.Tuple;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /*
@@ -52,9 +53,7 @@ public class Moves {
         if (Board.BOARD[x3][y3].getTeam() == 0) {
             LIST_OF_MOVES.add(Tuple.createPair(x3, y3, true));
             return true;
-        } else {
-            return false;
-        }
+        } return false;
     }
 
     /*
@@ -71,20 +70,41 @@ public class Moves {
      */
     public static List<Tuple<Integer, Integer, Boolean>> getMoves(int x, int y) {
         LIST_OF_MOVES.clear();
-        getMoves(Board.BOARD[x][y]);
-        return LIST_OF_MOVES;
-    }
 
-    /*
-     * gets all the valid moves for a give piece via a piece on the board
-     */
-    private static void getMoves(Man man) {
+        Man man = Board.BOARD[x][y];
+
+        if (man.getTeam() == 0) {
+            return Collections.emptyList();
+        }
         // if the piece is allowed to move downwards diagonally
         boolean down = man.getTeam() == -1 || man.getTeam() == 1 && man.isKing();
         // if the piece is allowed to move upwards diagonally
         boolean up = man.getTeam() == 1 || man.getTeam() == -1 && man.isKing();
 
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (i == 0 || j == 0) continue;
+                if (i == 1 && !down || i == -1 && !up) continue;
+                canMove(x, y, x + i, y + j);
+            }
+        }
+        return LIST_OF_MOVES;
+    }
 
+    /*
+     * prints the found moves to the console
+     */
+    public static void getMovesDebug(int x, int y) {
+        List<Tuple<Integer, Integer, Boolean>> moves = getMoves(x, y);
+
+        if (moves.isEmpty()) {
+            System.out.println("no moves found");
+            return;
+        }
+
+        for (Tuple<Integer, Integer, Boolean> tuple : moves) {
+            System.out.println("x : " + tuple.getElement1() + " y : " + tuple.getElement2() + " is deadly : " + tuple.getElement3());
+        }
     }
 
 }
