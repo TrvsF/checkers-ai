@@ -22,7 +22,7 @@ public class Window extends JFrame {
     }
 
     private void initWindow() {
-        this.setSize(960, 640);
+        this.setSize(1280, 720);
         this.setResizable(false);
         this.setLayout(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -33,23 +33,23 @@ public class Window extends JFrame {
     }
 
     private void initPieces() {
-        int x = 280;
+        int x = 40;
         int y = 160;
         int padding = 50;
         for (Man[] men : Board.BOARD) {
             for (Man man : men) {
                 if (man.getTeam() == 1) {
-                    this.add(new Piece("white", x, y));
+                    this.add(new Piece(man.getImage(), x, y));
                     System.out.println("drawing piece @ " + x + " " + y);
                 }
                 if (man.getTeam() == -1) {
-                    this.add(new Piece("black", x, y));
+                    this.add(new Piece(man.getImage(), x, y));
                     System.out.println("drawing piece @ " + x + " " + y);
                 }
                 x += padding;
             }
             y += padding;
-            x = 280;
+            x = 40;
         }
     }
 

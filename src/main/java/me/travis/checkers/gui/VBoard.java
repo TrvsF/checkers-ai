@@ -1,8 +1,5 @@
 package me.travis.checkers.gui;
 
-import me.travis.checkers.board.Board;
-import me.travis.checkers.board.Man;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +16,7 @@ public class VBoard extends JPanel {
 
     public VBoard() {
         setImage();
-        this.setBounds(280, 160, 400, 400);
+        this.setBounds(40, 160, 500, 500);
         // initPieces();
     }
 

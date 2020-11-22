@@ -14,14 +14,14 @@ public class Board {
      * @return the board object
      */
     private static Man[][] createBoard() {
-        Man[][] board = new Man[8][];
-        for (int i = 0; i < 8; i++) {
-            board[i] = new Man[8];
-            for (int j = 0; j < 8; j++) {
+        Man[][] board = new Man[10][];
+        for (int i = 0; i < 10; i++) {
+            board[i] = new Man[10];
+            for (int j = 0; j < 10; j++) {
                 if ((i + j) % 2 != 0) {
-                    if (i < 3) {
+                    if (i < 4) {
                         board[i][j] = new Man(-1);
-                    } else if (i > 4) {
+                    } else if (i > 5) {
                         board[i][j] = new Man(1);
                     } else {
                         board[i][j] = new Man(0);
