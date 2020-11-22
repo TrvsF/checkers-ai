@@ -52,6 +52,13 @@ public class Window extends JFrame {
         }
     }
 
+    public static void drawHighlights(int x, int y) {
+        x = (x * PIECE_PADDING) + PIECE_START_X;
+        y = (y * PIECE_PADDING) + PIECE_START_Y;
 
+        JLabel hl = new JLabel();
+        hl.setBounds(x, y, 50, 50);
+        hl.setBackground(Color.BLUE);
+    }
 
 }

@@ -1,10 +1,15 @@
 package me.travis.checkers.gui;
 
+import me.travis.checkers.logic.Game;
+import me.travis.checkers.logic.Moves;
+import me.travis.checkers.util.Tuple;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 /*
  * Piece panel that displays the piece on the board
@@ -35,6 +40,19 @@ public class Piece extends JPanel implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         System.out.println("you just clicked a piece with team : " + this.team);
+        int[] relative = Game.guiToBoard(this.getX(), this.getY());
+        System.out.println("X : " + relative[0]);
+        System.out.println("Y : " + relative[1]);
+        Moves.getMovesDebug(relative[1], relative[0]);
+        List<Tuple<Integer, Integer, Boolean>> moves = Moves.getMoves(relative[0], relative[1]);
+
+        if (moves.isEmpty()) {
+            return;
+        }
+
+        for (Tuple<Integer, Integer, Boolean> tuple : moves) {
+            Window.drawHighlights(tuple.getElement1(), tuple.getElement2());
+        }
     }
 
     @Override

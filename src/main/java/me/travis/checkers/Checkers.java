@@ -13,9 +13,9 @@ public class Checkers {
     public static void main(String[] args) {
         System.out.println("STARTING CHECKERS...");
         Board.printDebugBoard();
-        Window window = new Window();
-        Board.BOARD[3][2] = new Man(1);
-        Moves.getMovesDebug(2, 1);
+        new Window();
+//        Board.BOARD[3][2] = new Man(1);
+//        Moves.getMovesDebug(2, 1);
     }
 
 }

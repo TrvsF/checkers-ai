@@ -131,7 +131,7 @@ public class Moves {
         }
 
         for (Tuple<Integer, Integer, Boolean> tuple : moves) {
-            System.out.println("x : " + tuple.getElement1() + " y : " + tuple.getElement2() + " is deadly : " + tuple.getElement3());
+            System.out.println("x : " + tuple.getElement2() + " y : " + tuple.getElement1() + " is deadly : " + tuple.getElement3());
         }
     }
 
