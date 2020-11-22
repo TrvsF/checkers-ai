@@ -23,6 +23,9 @@ public class Man {
         this.setImage();
     }
 
+    /**
+     * sets the image of the man
+     */
     private void setImage() {
         BufferedImage img;
         try {
@@ -34,6 +37,9 @@ public class Man {
         this.image = img;
     }
 
+    /**
+     * sets the path of the image to whatever image should be displayed based on team
+     */
     private void setColourPath() {
         if (this.team == 1) {
             this.colourPath = "white";
@@ -44,14 +50,23 @@ public class Man {
         }
     }
 
+    /**
+     * @return the image of the man
+     */
     public BufferedImage getImage() {
         return this.image;
     }
 
+    /**
+     * @return the team of the man
+     */
     public int getTeam() {
         return this.team;
     }
 
+    /**
+     * @return if the man is a king
+     */
     public boolean isKing() {
         return this.isKing;
     }

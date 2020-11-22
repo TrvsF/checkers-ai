@@ -14,6 +14,12 @@ public class Window extends JFrame {
 
     private final ImageIcon ICON = new ImageIcon("src/main/resources/logo.png");
 
+    public static final int PIECE_START_X = 40;
+
+    public static final int PIECE_START_Y = 160;
+
+    public static final int PIECE_PADDING = 50;
+
     public Window() {
         this.initPieces();
         this.add(new Title());
@@ -33,24 +39,19 @@ public class Window extends JFrame {
     }
 
     private void initPieces() {
-        int x = 40;
-        int y = 160;
-        int padding = 50;
+        int x = PIECE_START_X;
+        int y = PIECE_START_Y;
         for (Man[] men : Board.BOARD) {
             for (Man man : men) {
-                if (man.getTeam() == 1) {
-                    this.add(new Piece(man.getImage(), x, y));
-                    System.out.println("drawing piece @ " + x + " " + y);
-                }
-                if (man.getTeam() == -1) {
-                    this.add(new Piece(man.getImage(), x, y));
-                    System.out.println("drawing piece @ " + x + " " + y);
-                }
-                x += padding;
+                this.add(new Piece(man.getImage(), x, y, man.getTeam()));
+                System.out.println("drawing piece @ " + x + " " + y);
+                x += PIECE_PADDING;
             }
-            y += padding;
-            x = 40;
+            y += PIECE_PADDING;
+            x = PIECE_START_X;
         }
     }
+
+
 
 }
