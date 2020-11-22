@@ -9,13 +9,10 @@ import java.io.IOException;
 
 public class Piece extends JPanel {
 
-    private BufferedImage piece;
-
-    public Piece(String colour) {
-        setImage(colour);
-    }
+    private BufferedImage PIECE;
 
     public Piece(String colour, int x, int y) {
+        this.setOpaque(false);
         setImage(colour);
         setPos(x, y);
     }
@@ -26,20 +23,20 @@ public class Piece extends JPanel {
 
     // sets the image to piece.png, will draw nothing if there is an error loading
     private void setImage(String colour) {
-        BufferedImage piece_;
+        BufferedImage piece;
         try {
-            piece_ = ImageIO.read(new File("src/main/resources/" + colour + ".png"));
+            piece = ImageIO.read(new File("src/main/resources/" + colour + ".png"));
         } catch (IOException ignored) {
             System.out.println("ERROR LOADING PIECE");
-            piece_ = null;
+            piece = null;
         }
-        this.piece = piece_;
+        this.PIECE = piece;
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(piece, 0, 0, this);
+        g.drawImage(PIECE, 0, 0, this);
     }
 
 }

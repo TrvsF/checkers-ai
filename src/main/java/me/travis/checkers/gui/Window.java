@@ -1,6 +1,5 @@
 package me.travis.checkers.gui;
 
-import javafx.scene.chart.PieChart;
 import me.travis.checkers.board.Board;
 import me.travis.checkers.board.Man;
 
@@ -16,9 +15,10 @@ public class Window extends JFrame {
     private final ImageIcon ICON = new ImageIcon("src/main/resources/logo.png");
 
     public Window() {
-        initWindow();
-        // initPieces();
+        initPieces();
         this.add(new Title());
+        this.add(new VBoard());
+        initWindow();
     }
 
     private void initWindow() {
@@ -27,9 +27,8 @@ public class Window extends JFrame {
         this.setLayout(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("Checkers : Menu");
-        this.getContentPane().setBackground(new Color(0xE0E0E0));
+        this.getContentPane().setBackground(new Color(0x4F4F4F));
         this.setIconImage(ICON.getImage());
-        this.add(new VBoard());
         this.setVisible(true);
     }
 
@@ -41,13 +40,16 @@ public class Window extends JFrame {
             for (Man man : men) {
                 if (man.getTeam() == 1) {
                     this.add(new Piece("white", x, y));
+                    System.out.println("drawing piece @ " + x + " " + y);
                 }
                 if (man.getTeam() == -1) {
                     this.add(new Piece("black", x, y));
+                    System.out.println("drawing piece @ " + x + " " + y);
                 }
                 x += padding;
             }
             y += padding;
+            x = 280;
         }
     }
 
