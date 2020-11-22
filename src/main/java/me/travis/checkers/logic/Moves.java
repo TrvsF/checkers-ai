@@ -71,7 +71,7 @@ public class Moves {
      * @return if a given coordinate will be out of bounds of the board
      */
     private static boolean isOutOfBounds(int i) {
-        return i < 0 || i > 8;
+        return i < 0 || i > 10;
     }
 
     /**
