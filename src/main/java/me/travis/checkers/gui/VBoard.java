@@ -15,7 +15,7 @@ public class VBoard extends JPanel {
     private BufferedImage BOARD;
 
     public VBoard() {
-        setImage();
+        this.setImage();
         this.setBounds(40, 160, 500, 500);
         // initPieces();
     }

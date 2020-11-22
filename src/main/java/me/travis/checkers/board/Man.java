@@ -56,6 +56,10 @@ public class Man {
         return this.isKing;
     }
 
+    /**
+     * change the image to the king variant
+     * set isKing to true
+     */
     public void makeKing() {
         this.colourPath += "_k";
         this.isKing = true;

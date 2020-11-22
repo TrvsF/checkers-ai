@@ -15,10 +15,10 @@ public class Window extends JFrame {
     private final ImageIcon ICON = new ImageIcon("src/main/resources/logo.png");
 
     public Window() {
-        initPieces();
+        this.initPieces();
         this.add(new Title());
         this.add(new VBoard());
-        initWindow();
+        this.initWindow();
     }
 
     private void initWindow() {

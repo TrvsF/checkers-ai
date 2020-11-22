@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+/*
+ * Piece panel that displays the piece on the board
+ */
 public class Piece extends JPanel {
 
     BufferedImage image;
@@ -11,7 +14,7 @@ public class Piece extends JPanel {
     public Piece(BufferedImage image, int x, int y) {
         this.setOpaque(false); // so the png works (why isn't this enabled by default??)
         this.image = image;
-        setPos(x, y);
+        this.setPos(x, y);
     }
 
     public void setPos(int x, int y) {

@@ -17,7 +17,7 @@ public class Title extends JPanel {
     private BufferedImage TITLE;
 
     public Title() {
-        setImage();
+        this.setImage();
         this.setBounds(440, 20, 480, 120);
         this.setBorder(BORDER);
     }
