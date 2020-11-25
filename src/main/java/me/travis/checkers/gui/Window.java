@@ -5,6 +5,8 @@ import me.travis.checkers.board.Man;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * class for the main window of the GUI
@@ -14,6 +16,10 @@ public class Window extends JFrame {
 
     private final ImageIcon ICON = new ImageIcon("src/main/resources/logo.png");
 
+    private final List<Highlight> HIGHLIGHTS = new ArrayList<>();
+
+    private final List<Piece> PIECES = new ArrayList<>();
+
     public static final int PIECE_START_X = 40;
 
     public static final int PIECE_START_Y = 160;
@@ -21,12 +27,16 @@ public class Window extends JFrame {
     public static final int PIECE_PADDING = 50;
 
     public Window() {
-        this.initPieces();
+        this.drawPieces();
         this.add(new Title());
         this.add(new VBoard());
         this.initWindow();
     }
 
+    /**
+     * draws a 1280 x 720 window that will house all the panels that make up our UI
+     * also sets the window title, its background, the icon etc
+     */
     private void initWindow() {
         this.setSize(1280, 720);
         this.setResizable(false);
@@ -38,12 +48,21 @@ public class Window extends JFrame {
         this.setVisible(true);
     }
 
-    private void initPieces() {
+    /**
+     * draws the pieces of the board
+     * from the master board object
+     */
+    private void drawPieces() {
+        this.refresh();
+
         int x = PIECE_START_X;
         int y = PIECE_START_Y;
+
         for (Man[] men : Board.BOARD) {
             for (Man man : men) {
-                this.add(new Piece(man.getImage(), x, y, man.getTeam()));
+                Piece piece = new Piece(man.getImage(), x, y, man.getTeam());
+                this.add(piece);
+                this.PIECES.add(piece);
                 System.out.println("drawing piece @ " + x + " " + y);
                 x += PIECE_PADDING;
             }
@@ -52,13 +71,42 @@ public class Window extends JFrame {
         }
     }
 
-    public static void drawHighlights(int x, int y) {
+    /**
+     * draws a highlight object at a specific position
+     * @param x X
+     * @param y Y
+     */
+    public void drawHighlights(int x, int y) {
+        this.refresh();
+
         x = (x * PIECE_PADDING) + PIECE_START_X;
         y = (y * PIECE_PADDING) + PIECE_START_Y;
 
-        JLabel hl = new JLabel();
-        hl.setBounds(x, y, 50, 50);
-        hl.setBackground(Color.BLUE);
+        System.out.println("adding hl @ " + x + ", " + y);
+        Highlight hl = new Highlight(x, y);
+        this.HIGHLIGHTS.add(hl);
+    }
+
+    public void clearPieces() {
+        if (this.PIECES.isEmpty()) return;
+
+        for (Piece piece : this.PIECES) {
+            this.remove(piece);
+        }
+        this.PIECES.clear();
+    }
+
+    public void clearHighlights() {
+        if (this.HIGHLIGHTS.isEmpty()) return;
+
+        for (Highlight hl : this.HIGHLIGHTS) {
+            this.remove(hl);
+        }
+        this.HIGHLIGHTS.clear();
+    }
+
+    private void refresh() {
+        SwingUtilities.updateComponentTreeUI(this);
     }
 
 }
