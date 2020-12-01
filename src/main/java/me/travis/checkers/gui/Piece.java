@@ -1,6 +1,7 @@
 package me.travis.checkers.gui;
 
 import me.travis.checkers.Checkers;
+import me.travis.checkers.board.Board;
 import me.travis.checkers.logic.Game;
 import me.travis.checkers.logic.Moves;
 import me.travis.checkers.util.Tuple;
@@ -15,7 +16,7 @@ import java.util.List;
 /*
  * Piece panel that displays the piece on the board
  */
-public class Piece extends JPanel implements MouseListener {
+public class Piece extends JLayeredPane implements MouseListener {
 
     private final BufferedImage image;
     private final int team;
@@ -40,21 +41,40 @@ public class Piece extends JPanel implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+
+        System.out.println("------------------------");
+
         System.out.println("you just clicked a piece with team : " + this.team);
+
+        // get the coords of the board (flipped bc nested arrays are backward)
         int[] relative = Game.guiToBoard(this.getX(), this.getY());
+
+        // displays what has just been clicked to the user
         System.out.println("X : " + relative[0] + " | " + this.getX());
         System.out.println("Y : " + relative[1] + " | " + this.getY());
+        System.out.println("------------------------");
+        // flipped bc nested arrays are backward - gets the moves that piece can move to
+        System.out.println("VALID MOVES : ");
         Moves.getMovesDebug(relative[1], relative[0]);
-        List<Tuple<Integer, Integer, Boolean>> moves = Moves.getMoves(relative[0], relative[1]);
+        System.out.println("------------------------");
+        List<Tuple<Integer, Integer, Boolean>> moves = Moves.getMoves(relative[1], relative[0]);
 
+        // if there are no moves we don't care about that piece
         if (moves.isEmpty()) {
             return;
         }
 
+        System.out.println("drawing moves now...");
+
+        // if there is moves then remove the old highlights and draw new ones
         for (Tuple<Integer, Integer, Boolean> tuple : moves) {
             Checkers.getWindow().clearHighlights();
-            Checkers.getWindow().drawHighlights(tuple.getElement1(), tuple.getElement2());
+            // flipped as in the gui we work with x horizontal and y vertical
+            Board.BOARD[tuple.getElement1()][tuple.getElement2()].makeHighlight();
+            Checkers.getWindow().refresh();
         }
+
+        System.out.println("------------------------");
     }
 
     @Override

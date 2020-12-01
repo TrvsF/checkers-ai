@@ -11,7 +11,7 @@ import java.io.IOException;
  */
 public class Man {
 
-    private final int team;
+    private int team;
     private boolean isKing;
     private String colourPath;
     private BufferedImage image;
@@ -44,6 +44,8 @@ public class Man {
         if (this.team == 1) {
             this.colourPath = "white";
         } else if (this.team == -1) {
+            this.colourPath = "black";
+        } else if (this.team == 9) {
             this.colourPath = "black";
         } else {
             this.colourPath = "blank";
@@ -79,6 +81,18 @@ public class Man {
         this.colourPath += "_k";
         this.isKing = true;
         this.setImage();
+    }
+
+    public void makeNull() {
+        this.team = 0;
+        this.isKing = false;
+        this.setColourPath();
+    }
+
+    public void makeHighlight() {
+        this.team = 9;
+        this.isKing = false;
+        this.setColourPath();
     }
 
 }

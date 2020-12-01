@@ -16,8 +16,6 @@ public class Window extends JFrame {
 
     private final ImageIcon ICON = new ImageIcon("src/main/resources/logo.png");
 
-    private final List<Highlight> HIGHLIGHTS = new ArrayList<>();
-
     private final List<Piece> PIECES = new ArrayList<>();
 
     public static final int PIECE_START_X = 40;
@@ -53,8 +51,6 @@ public class Window extends JFrame {
      * from the master board object
      */
     private void drawPieces() {
-        this.refresh();
-
         int x = PIECE_START_X;
         int y = PIECE_START_Y;
 
@@ -63,28 +59,12 @@ public class Window extends JFrame {
                 Piece piece = new Piece(man.getImage(), x, y, man.getTeam());
                 this.add(piece);
                 this.PIECES.add(piece);
-                System.out.println("drawing piece @ " + x + " " + y);
+                // System.out.println("drawing piece @ " + x + " " + y);
                 x += PIECE_PADDING;
             }
             y += PIECE_PADDING;
             x = PIECE_START_X;
         }
-    }
-
-    /**
-     * draws a highlight object at a specific position
-     * @param x X
-     * @param y Y
-     */
-    public void drawHighlights(int x, int y) {
-        this.refresh();
-
-        x = (x * PIECE_PADDING) + PIECE_START_X;
-        y = (y * PIECE_PADDING) + PIECE_START_Y;
-
-        System.out.println("adding hl @ " + x + ", " + y);
-        Highlight hl = new Highlight(x, y);
-        this.HIGHLIGHTS.add(hl);
     }
 
     public void clearPieces() {
@@ -97,16 +77,14 @@ public class Window extends JFrame {
     }
 
     public void clearHighlights() {
-        if (this.HIGHLIGHTS.isEmpty()) return;
-
-        for (Highlight hl : this.HIGHLIGHTS) {
-            this.remove(hl);
-        }
-        this.HIGHLIGHTS.clear();
+        Board.clearHighlights();
     }
 
-    private void refresh() {
-        SwingUtilities.updateComponentTreeUI(this);
+    public void refresh() {
+        System.out.println("refreshing... ");
+        // SwingUtilities.updateComponentTreeUI(this);
+        this.clearPieces();
+        this.drawPieces();
     }
 
 }

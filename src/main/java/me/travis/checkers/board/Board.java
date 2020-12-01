@@ -34,6 +34,16 @@ public class Board {
         return board;
     }
 
+    public static void clearHighlights() {
+        for (Man[] men : BOARD) {
+            for (Man man : men) {
+                if (man.getTeam() == 9) {
+                    man.makeNull();
+                }
+            }
+        }
+    }
+
     /*
      * prints out the board to the console
      * used for debugging (hence the name)
