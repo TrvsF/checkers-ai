@@ -17,7 +17,6 @@ public class VBoard extends JPanel {
     public VBoard() {
         this.setImage();
         this.setBounds(40, 160, 500, 500);
-        // initPieces();
     }
 
     // sets the image to board.png, will draw nothing if there is an error loading

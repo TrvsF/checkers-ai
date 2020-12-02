@@ -20,7 +20,6 @@ public class Man {
         this.team = team;
         this.isKing = false;
         this.setColourPath();
-        this.setImage();
     }
 
     /**
@@ -30,8 +29,8 @@ public class Man {
         BufferedImage img;
         try {
             img = ImageIO.read(new File("src/main/resources/" + this.colourPath + ".png"));
-        } catch (IOException ignored) {
-            System.out.println("ERROR LOADING PIECE");
+        } catch (IOException exception) {
+            System.out.println("ERROR LOADING PIECE - TRAVIS PLEASE : " + exception);
             img = null;
         }
         this.image = img;
@@ -46,10 +45,11 @@ public class Man {
         } else if (this.team == -1) {
             this.colourPath = "black";
         } else if (this.team == 9) {
-            this.colourPath = "black";
+            this.colourPath = "highlight";
         } else {
             this.colourPath = "blank";
         }
+        this.setImage();
     }
 
     /**
@@ -83,12 +83,18 @@ public class Man {
         this.setImage();
     }
 
+    /**
+     * makes the position empty
+     */
     public void makeNull() {
         this.team = 0;
         this.isKing = false;
         this.setColourPath();
     }
 
+    /**
+     * makes the position a highlight
+     */
     public void makeHighlight() {
         this.team = 9;
         this.isKing = false;

@@ -16,7 +16,7 @@ import java.util.List;
 /*
  * Piece panel that displays the piece on the board
  */
-public class Piece extends JLayeredPane implements MouseListener {
+public class Piece extends JPanel implements MouseListener {
 
     private final BufferedImage image;
     private final int team;
@@ -39,8 +39,15 @@ public class Piece extends JLayeredPane implements MouseListener {
         g.drawImage(image, 0, 0, this);
     }
 
+    /**
+     * upon the mouse being pressed on the piece
+     * @param e MouseEvent
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
+
+        // clears the currently drawn highlights
+        Checkers.getWindow().clearHighlights();
 
         System.out.println("------------------------");
 
@@ -66,15 +73,18 @@ public class Piece extends JLayeredPane implements MouseListener {
 
         System.out.println("drawing moves now...");
 
-        // if there is moves then remove the old highlights and draw new ones
+        // for each new place to highlight
         for (Tuple<Integer, Integer, Boolean> tuple : moves) {
-            Checkers.getWindow().clearHighlights();
-            // flipped as in the gui we work with x horizontal and y vertical
+            // update the board to display the new highlights
             Board.BOARD[tuple.getElement1()][tuple.getElement2()].makeHighlight();
-            Checkers.getWindow().refresh();
         }
 
+        // refresh the GUI
+        Checkers.getWindow().refresh();
+
         System.out.println("------------------------");
+
+        Board.printDebugBoard();
     }
 
     @Override

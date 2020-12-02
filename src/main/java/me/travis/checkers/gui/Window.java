@@ -59,7 +59,9 @@ public class Window extends JFrame {
                 Piece piece = new Piece(man.getImage(), x, y, man.getTeam());
                 this.add(piece);
                 this.PIECES.add(piece);
-                // System.out.println("drawing piece @ " + x + " " + y);
+                if (man.getTeam() == 9) {
+                    System.out.println("drawing highlight");
+                }
                 x += PIECE_PADDING;
             }
             y += PIECE_PADDING;
@@ -73,7 +75,10 @@ public class Window extends JFrame {
         for (Piece piece : this.PIECES) {
             this.remove(piece);
         }
+
         this.PIECES.clear();
+
+        this.drawPieces();
     }
 
     public void clearHighlights() {
@@ -82,9 +87,9 @@ public class Window extends JFrame {
 
     public void refresh() {
         System.out.println("refreshing... ");
-        // SwingUtilities.updateComponentTreeUI(this);
+        SwingUtilities.updateComponentTreeUI(this);
         this.clearPieces();
-        this.drawPieces();
+        // this.drawPieces();
     }
 
 }
