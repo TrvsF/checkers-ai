@@ -1,6 +1,5 @@
 package me.travis.checkers.logic;
 
-import me.travis.checkers.Checkers;
 import me.travis.checkers.board.Board;
 import me.travis.checkers.board.Man;
 import me.travis.checkers.util.Tuple;
@@ -86,9 +85,6 @@ public class Moves {
         Board.BOARD[x1][y1] = Board.BOARD[x2][y2];
         Board.BOARD[x2][y2] = temp;
         if (deadly) {
-            System.out.println("killing piece : " + Board.BOARD[Math.abs(x1 - x2)][Math.abs(y1 - y2)].getTeam());
-            System.out.println("X : " + Math.abs(x1 - x2));
-            System.out.println("Y : " + Math.abs(y1 - y2));
             Board.BOARD[Math.min(x1, x2) + 1][Math.min(y1, y2) + 1].makeNull();
         }
     }

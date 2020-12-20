@@ -1,17 +1,12 @@
 package me.travis.checkers.gui;
 
 import me.travis.checkers.Checkers;
-import me.travis.checkers.board.Board;
-import me.travis.checkers.logic.Misc;
-import me.travis.checkers.logic.Moves;
-import me.travis.checkers.util.Tuple;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.util.List;
 
 /*
  * Piece panel that displays the piece on the board

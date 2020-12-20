@@ -34,6 +34,30 @@ public class Board {
         return board;
     }
 
+    public static int getBlackCount() {
+        int c = 0;
+        for (Man[] men : BOARD) {
+            for (Man man : men) {
+                if (man.getTeam() == -1) {
+                    c++;
+                }
+            }
+        }
+        return c;
+    }
+
+    public static int getWhiteCount() {
+        int c = 0;
+        for (Man[] men : BOARD) {
+            for (Man man : men) {
+                if (man.getTeam() == 1) {
+                    c++;
+                }
+            }
+        }
+        return c;
+    }
+
     /**
      * clears the non-deadly highlights
      */

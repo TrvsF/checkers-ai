@@ -1,6 +1,5 @@
 package me.travis.checkers.gui;
 
-import me.travis.checkers.Checkers;
 import me.travis.checkers.board.Board;
 import me.travis.checkers.board.Man;
 
