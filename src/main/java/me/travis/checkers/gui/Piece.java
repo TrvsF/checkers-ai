@@ -45,46 +45,7 @@ public class Piece extends JPanel implements MouseListener {
      */
     @Override
     public void mouseClicked(MouseEvent e) {
-
-        // clears the currently drawn highlights
-        Checkers.getWindow().clearHighlights();
-
-        System.out.println("------------------------");
-
-        System.out.println("you just clicked a piece with team : " + this.team);
-
-        // get the coords of the board (flipped bc nested arrays are backward)
-        int[] relative = Misc.guiToBoard(this.getX(), this.getY());
-
-        // displays what has just been clicked to the user
-        System.out.println("X : " + relative[0] + " | " + this.getX());
-        System.out.println("Y : " + relative[1] + " | " + this.getY());
-        System.out.println("------------------------");
-        // flipped bc nested arrays are backward - gets the moves that piece can move to
-        System.out.println("VALID MOVES : ");
-        Moves.getMovesDebug(relative[1], relative[0]);
-        System.out.println("------------------------");
-        List<Tuple<Integer, Integer, Boolean>> moves = Moves.getMoves(relative[1], relative[0]);
-
-        // if there are no moves we don't care about that piece
-        if (moves.isEmpty()) {
-            return;
-        }
-
-        System.out.println("drawing moves now...");
-
-        // for each new place to highlight
-        for (Tuple<Integer, Integer, Boolean> tuple : moves) {
-            // update the board to display the new highlights
-            Board.BOARD[tuple.getElement1()][tuple.getElement2()].makeHighlight();
-        }
-
-        // refresh the GUI
-        Checkers.getWindow().refresh();
-
-        System.out.println("------------------------");
-
-        Board.printDebugBoard();
+        Checkers.getGame().handleClick(getX(), getY(), this.team);
     }
 
     @Override

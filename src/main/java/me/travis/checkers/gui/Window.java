@@ -1,5 +1,6 @@
 package me.travis.checkers.gui;
 
+import me.travis.checkers.Checkers;
 import me.travis.checkers.board.Board;
 import me.travis.checkers.board.Man;
 
@@ -83,6 +84,7 @@ public class Window extends JFrame {
 
     public void clearHighlights() {
         Board.clearHighlights();
+        this.refresh();
     }
 
     public void refresh() {

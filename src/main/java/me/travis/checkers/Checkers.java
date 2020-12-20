@@ -3,23 +3,39 @@ package me.travis.checkers;
 import me.travis.checkers.board.Board;
 import me.travis.checkers.gui.Window;
 
-/*
+/**
  * main class of the program
+ * @author travis faulkner, began work on the 19th of November
  */
 public class Checkers {
 
     private static Window WINDOW;
 
+    private static Game GAME;
+
     public static void main(String[] args) {
+
         System.out.println("STARTING CHECKERS...");
+
         Board.printDebugBoard();
+
+        System.out.println("CREATING GUI...");
         WINDOW = new Window();
-//        Board.BOARD[3][2] = new Man(1);
-//        Moves.getMovesDebug(2, 1);
+
+        int mode = 0;
+        System.out.println("SETTING UP GAME IN MODE : " + mode);
+        GAME = new Game(mode);
+
+        Board.BOARD[3][2].makeKing();
+
     }
 
     public static Window getWindow() {
         return WINDOW;
+    }
+
+    public static Game getGame() {
+        return GAME;
     }
 
 }
