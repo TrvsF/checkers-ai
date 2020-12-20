@@ -80,9 +80,8 @@ public class Moves {
      * @param y1 starting Y
      * @param x2 end X
      * @param y2 end Y
-     * @throws ArrayIndexOutOfBoundsException
      */
-    public static void movePieces(int x1, int y1, int x2, int y2) throws ArrayIndexOutOfBoundsException {
+    public static void movePieces(int x1, int y1, int x2, int y2) {
         Man temp = Board.BOARD[x1][y1];
         Board.BOARD[x1][y1] = Board.BOARD[x2][y2];
         Board.BOARD[x2][y2] = temp;

@@ -27,7 +27,7 @@ public class Window extends JFrame {
     public Window() {
         this.drawPieces();
         this.add(new Title());
-        this.add(new VBoard());
+        //this.add(new VBoard());
         this.initWindow();
     }
 

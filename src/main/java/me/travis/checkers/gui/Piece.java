@@ -2,7 +2,7 @@ package me.travis.checkers.gui;
 
 import me.travis.checkers.Checkers;
 import me.travis.checkers.board.Board;
-import me.travis.checkers.logic.Game;
+import me.travis.checkers.logic.Misc;
 import me.travis.checkers.logic.Moves;
 import me.travis.checkers.util.Tuple;
 
@@ -54,7 +54,7 @@ public class Piece extends JPanel implements MouseListener {
         System.out.println("you just clicked a piece with team : " + this.team);
 
         // get the coords of the board (flipped bc nested arrays are backward)
-        int[] relative = Game.guiToBoard(this.getX(), this.getY());
+        int[] relative = Misc.guiToBoard(this.getX(), this.getY());
 
         // displays what has just been clicked to the user
         System.out.println("X : " + relative[0] + " | " + this.getX());

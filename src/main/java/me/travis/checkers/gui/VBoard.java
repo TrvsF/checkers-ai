@@ -10,7 +10,7 @@ import java.io.IOException;
 /*
  * panel object that shows the board
  */
-public class VBoard extends JPanel {
+public class VBoard extends JLayeredPane {
 
     private BufferedImage BOARD;
 
