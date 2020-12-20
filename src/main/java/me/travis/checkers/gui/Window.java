@@ -9,7 +9,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
+/**
  * class for the main window of the GUI
  * when object is create it defaults to showing the menu of the program
  */
@@ -70,6 +70,9 @@ public class Window extends JFrame {
         }
     }
 
+    /**
+     * clears all the pieces on the board
+     */
     public void clearPieces() {
         if (this.PIECES.isEmpty()) return;
 
@@ -82,16 +85,27 @@ public class Window extends JFrame {
         this.drawPieces();
     }
 
-    public void clearHighlights() {
-        Board.clearHighlights();
+    /**
+     * clears the highlights
+     * @param all specifies if it should clear the deadly ones or not, used so if a deadly move exists the player
+     *            HAS to take that move
+     */
+    public void clearHighlights(boolean all) {
+        if (all) {
+            Board.clearAllHighlights();
+        } else {
+            Board.clearHighlights();
+        }
         this.refresh();
     }
 
+    /**
+     * refreshes the board to draw the new pos of all the pieces
+     */
     public void refresh() {
         System.out.println("refreshing... ");
         SwingUtilities.updateComponentTreeUI(this);
         this.clearPieces();
-        // this.drawPieces();
     }
 
 }

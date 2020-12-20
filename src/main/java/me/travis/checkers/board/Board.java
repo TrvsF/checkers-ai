@@ -1,6 +1,6 @@
 package me.travis.checkers.board;
 
-/*
+/**
  * class for holding all the information on the board, including the board itself
  * this doesn't really *have* to be a class, but its a lot nicer to have the board object in its own space
  */
@@ -34,6 +34,9 @@ public class Board {
         return board;
     }
 
+    /**
+     * clears the non-deadly highlights
+     */
     public static void clearHighlights() {
         for (Man[] men : BOARD) {
             for (Man man : men) {
@@ -44,7 +47,20 @@ public class Board {
         }
     }
 
-    /*
+    /**
+     * clears ALL the highlights
+     */
+    public static void clearAllHighlights() {
+        for (Man[] men : BOARD) {
+            for (Man man : men) {
+                if (man.getTeam() >= 9) {
+                    man.makeNull();
+                }
+            }
+        }
+    }
+
+    /**
      * prints out the board to the console
      * used for debugging (hence the name)
      */

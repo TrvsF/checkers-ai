@@ -26,7 +26,7 @@ public class Game {
      * @param mode what mode the game is going to be played in
      */
     public Game(int mode) {
-        this.turn = -1;
+        this.turn = 1;
         this.selectedMan = null;
 
         this.whiteAI = (mode == 2);
@@ -56,7 +56,7 @@ public class Game {
      */
     public void handleClick(int x, int y, int team) {
         // clears the currently drawn highlights
-        Checkers.getWindow().clearHighlights();
+        Checkers.getWindow().clearHighlights(true);
 
         System.out.println("------------------------");
 
@@ -66,11 +66,11 @@ public class Game {
         int[] relative = Misc.guiToBoard(x, y);
 
         // if a highlight is selected
-        if (team == 9 && this.selectedMan != null) {
+        if (team >= 9 && this.selectedMan != null) {
 
             // move the pieces
             System.out.println("you have selected a valid move, making pieces now");
-            Moves.movePieces(relative[1], relative[0], selectedMan[0], selectedMan[1]);
+            Moves.movePieces(relative[1], relative[0], selectedMan[0], selectedMan[1], team == 10);
 
             // refresh the window
             Checkers.getWindow().refresh();
@@ -110,10 +110,19 @@ public class Game {
 
         System.out.println("drawing moves now...");
 
+        boolean shouldRenderNonDeadly = true;
+
         // for each new place to highlight
         for (Tuple<Integer, Integer, Boolean> tuple : moves) {
             // update the board to display the new highlights
-            Board.BOARD[tuple.getElement1()][tuple.getElement2()].makeHighlight();
+            if (tuple.getElement3()) {
+                Board.BOARD[tuple.getElement1()][tuple.getElement2()].makeDeadlyHighlight();
+                // clears of the normal highlights as you HAVE to jump if given the option
+                Checkers.getWindow().clearHighlights(false);
+                shouldRenderNonDeadly = false;
+            } else if (shouldRenderNonDeadly) {
+                Board.BOARD[tuple.getElement1()][tuple.getElement2()].makeHighlight();
+            }
         }
 
         // refresh the GUI

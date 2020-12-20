@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-/*
+/**
  * class used to hold the information on each piece
  * called man bc the wiki referred to the pieces of a checkers game as 'men'
  */
@@ -44,7 +44,7 @@ public class Man {
             this.colourPath = "white";
         } else if (this.team == -1) {
             this.colourPath = "black";
-        } else if (this.team == 9) {
+        } else if (this.team >= 9) {
             this.colourPath = "highlight";
         } else {
             this.colourPath = "blank";
@@ -97,6 +97,12 @@ public class Man {
      */
     public void makeHighlight() {
         this.team = 9;
+        this.isKing = false;
+        this.setColourPath();
+    }
+
+    public void makeDeadlyHighlight() {
+        this.team = 10;
         this.isKing = false;
         this.setColourPath();
     }
