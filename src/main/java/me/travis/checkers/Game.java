@@ -32,6 +32,8 @@ public class Game {
         this.whiteAI = (mode == 2);
         this.blackAI = (mode == 1 || mode == 2);
         this.gameOver = false;
+
+        Board.resetBoard();
     }
 
     /**
@@ -58,10 +60,6 @@ public class Game {
         // clears the currently drawn highlights
         Checkers.getWindow().clearHighlights(true);
 
-        System.out.println("------------------------");
-
-        System.out.println("you just clicked a piece with team : " + team);
-
         // get the coords of the board (flipped bc nested arrays are backward)
         int[] relative = Misc.guiToBoard(x, y);
 
@@ -69,7 +67,6 @@ public class Game {
         if (team >= 9 && this.selectedMan != null) {
 
             // move the pieces
-            System.out.println("you have selected a valid move, making pieces now");
             Moves.movePieces(relative[1], relative[0], selectedMan[0], selectedMan[1], team == 10);
 
             // refresh the window
@@ -83,20 +80,8 @@ public class Game {
 
         // if it isnt the turn of the team clicked
         if (team != this.turn ) {
-            System.out.println("it is not this team's turn");
             return;
         }
-
-        // displays what has just been clicked to the user
-        System.out.println("X : " + relative[0] + " | " + x);
-        System.out.println("Y : " + relative[1] + " | " + y);
-        System.out.println("------------------------");
-        // flipped bc nested arrays are backward - gets the moves that piece can move to
-        System.out.println("VALID MOVES : ");
-
-        Moves.getMovesDebug(relative[1], relative[0]);
-
-        System.out.println("------------------------");
 
         List<Tuple<Integer, Integer, Boolean>> moves = Moves.getMoves(relative[1], relative[0]);
 
@@ -107,8 +92,6 @@ public class Game {
 
         // if there is, store the given position so we can move it later
         this.selectedMan = new int[]{relative[1], relative[0]};
-
-        System.out.println("drawing moves now...");
 
         boolean shouldRenderNonDeadly = true;
 
@@ -128,8 +111,6 @@ public class Game {
         // refresh the GUI
         Checkers.getWindow().refresh();
 
-        System.out.println("------------------------");
-
         Board.printDebugBoard();
     }
 
@@ -137,6 +118,13 @@ public class Game {
      * changes who's turn it is
      */
     private void nextTurn() {
+
+        this.boardCheck();
+
+        if (this.gameOver) {
+            System.out.println("GAME OVER");
+        }
+
         this.turn *= -1;
 
         if (this.turn == 1 && whiteAI) {
@@ -146,6 +134,15 @@ public class Game {
         if (this.turn == -1 && blackAI) {
             // do black AI turn
         }
+    }
+
+    /**
+     * ensures the board is ready for the next turn
+     */
+    private void boardCheck() {
+        Board.checkKings();
+        Board.clearAllHighlights();
+        gameOver = Board.shouldGameFinish();
     }
 
     /**

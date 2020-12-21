@@ -34,7 +34,11 @@ public class Board {
         return board;
     }
 
-    public static int getBlackCount() {
+    public static void resetBoard() {
+        BOARD = createBoard();
+    }
+
+    private static int getBlackCount() {
         int c = 0;
         for (Man[] men : BOARD) {
             for (Man man : men) {
@@ -46,7 +50,7 @@ public class Board {
         return c;
     }
 
-    public static int getWhiteCount() {
+    private static int getWhiteCount() {
         int c = 0;
         for (Man[] men : BOARD) {
             for (Man man : men) {
@@ -56,6 +60,10 @@ public class Board {
             }
         }
         return c;
+    }
+
+    public static boolean shouldGameFinish() {
+        return getBlackCount() == 0 || getWhiteCount() == 0;
     }
 
     /**
@@ -91,9 +99,23 @@ public class Board {
     public static void printDebugBoard() {
         for (Man[] men : BOARD) {
             for (Man man : men) {
-                System.out.print(man.getTeam());
+                System.out.print((man.getTeam() < 0 || man.getTeam() > 9 ? " " : "  ") + man.getTeam());
             }
             System.out.print("\n");
+        }
+    }
+
+    /**
+     * checks if there are any pieces on the board that should be kings and makes them a king
+     */
+    public static void checkKings() {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if ( (BOARD[i][j].getTeam() == -1 && i == 9 || BOARD[i][j].getTeam() == 1 && i == 0 )
+                        && !BOARD[i][j].isKing()) {
+                    BOARD[i][j].makeKing();
+                }
+            }
         }
     }
 

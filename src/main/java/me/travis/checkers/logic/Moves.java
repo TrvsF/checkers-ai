@@ -5,7 +5,6 @@ import me.travis.checkers.board.Man;
 import me.travis.checkers.util.Tuple;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -24,10 +23,10 @@ public class Moves {
      * @param x2 X of spot to check
      * @param y2 Y of spot to check
      */
-    public static void canMove(int x1, int y1, int x2, int y2) {
+    public static boolean canMove(int x1, int y1, int x2, int y2) {
 
         if (isOutOfBounds(x1) || isOutOfBounds(x2) || isOutOfBounds(y1) || isOutOfBounds(y2)) {
-            return;
+            return false;
         }
 
         int teamToMove = Board.BOARD[x1][y1].getTeam();
@@ -36,13 +35,15 @@ public class Moves {
         // if the spot if vacant add to list of return true
         if (teamToMoveTo == 0) {
             LIST_OF_MOVES.add(Tuple.create(x2, y2, false));
-            return;
+            return true;
         }
 
         // returns true if the spot is deadly
         if (teamToMoveTo == teamToMove * -1) {
-            canJump(x1, y1, x2, y2);
+            return canJump(x1, y1, x2, y2);
         }
+
+        return false;
     }
 
     /**
@@ -52,17 +53,24 @@ public class Moves {
      * @param x2 X of the piece to be jumped
      * @param y2 Y of the piece to be jumped
      */
-    private static void canJump(int x1, int y1, int x2, int y2) {
+    private static boolean canJump(int x1, int y1, int x2, int y2) {
         int x3 = (x2 - x1) + x2;
         int y3 = (y2 - y1) + y2;
 
         if (isOutOfBounds(x3) || isOutOfBounds(y3)) {
-            return;
+            return false;
         }
 
+        // if a piece can jump over more than one highlight that rather than the single jump
         if (Board.BOARD[x3][y3].getTeam() == 0) {
+//            if (getAllMoves(x3, y3, Board.BOARD[x1][y1])) {
+//                return true;
+//            }
             LIST_OF_MOVES.add(Tuple.create(x3, y3, true));
+            return true;
         }
+
+        return false;
     }
 
     /**
@@ -85,37 +93,47 @@ public class Moves {
         Board.BOARD[x1][y1] = Board.BOARD[x2][y2];
         Board.BOARD[x2][y2] = temp;
         if (deadly) {
-            Board.BOARD[Math.min(x1, x2) + 1][Math.min(y1, y2) + 1].makeNull();
+            for (int i = 1; i < Math.abs(x1 - x2); i += 2) {
+                Board.BOARD[Math.min(x1, x2) + i][Math.min(y1, y2) + i].makeNull();
+            }
         }
+    }
+
+    public static List<Tuple<Integer, Integer, Boolean>> getMoves(int x, int y) {
+        LIST_OF_MOVES.clear();
+
+        getAllMoves(x, y, Board.BOARD[x][y]);
+
+        return LIST_OF_MOVES;
     }
 
     /**
      * gets all valid moves for a given coordinate
      * @param x X
      * @param y Y
-     * @return a list of moves (x, y, if the move is deadly [kills another piece])
      */
-    public static List<Tuple<Integer, Integer, Boolean>> getMoves(int x, int y) {
-        LIST_OF_MOVES.clear();
+    public static boolean getAllMoves(int x, int y, Man man) {
 
-        Man man = Board.BOARD[x][y];
-
+        // theres no point checking what moves are valid if we select a blank piece
         if (man.getTeam() == 0) {
-            return Collections.emptyList();
+            return false;
         }
         // if the piece is allowed to move downwards diagonally
         boolean down = man.getTeam() == -1 || man.getTeam() == 1 && man.isKing();
         // if the piece is allowed to move upwards diagonally
         boolean up = man.getTeam() == 1 || man.getTeam() == -1 && man.isKing();
 
+        boolean hasMoved = false;
+
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 if (i == 0 || j == 0) continue;
                 if (i == 1 && !down || i == -1 && !up) continue;
-                canMove(x, y, x + i, y + j);
+                if (canMove(x, y, x + i, y + j)) hasMoved = true;
             }
         }
-        return LIST_OF_MOVES;
+
+        return hasMoved;
     }
 
     /**

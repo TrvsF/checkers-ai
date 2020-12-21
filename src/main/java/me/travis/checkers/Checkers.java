@@ -1,6 +1,7 @@
 package me.travis.checkers;
 
 import me.travis.checkers.board.Board;
+import me.travis.checkers.board.Man;
 import me.travis.checkers.gui.Window;
 
 /**
@@ -28,6 +29,13 @@ public class Checkers {
 
         Board.BOARD[3][2].makeKing();
 
+        Board.BOARD[2][3] = new Man(-1);
+        Board.BOARD[3][4] = new Man(1);
+        Board.BOARD[5][6] = new Man(1);
+        Board.BOARD[4][5].makeNull();
+        Board.BOARD[6][7].makeNull();
+
+        WINDOW.refresh();
     }
 
     public static Window getWindow() {

@@ -2,6 +2,10 @@ package me.travis.checkers.util.tree;
 
 public class Tree {
 
-    // TODO : THIS
+    private final Node root;
+
+    public Tree(Node root) {
+        this.root = root;
+    }
 
 }
