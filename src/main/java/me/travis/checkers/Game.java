@@ -1,8 +1,10 @@
 package me.travis.checkers;
 
 import me.travis.checkers.board.Board;
+import me.travis.checkers.board.Man;
 import me.travis.checkers.logic.Misc;
 import me.travis.checkers.logic.Moves;
+import me.travis.checkers.util.Pair;
 import me.travis.checkers.util.Tuple;
 
 import java.util.List;
@@ -98,7 +100,7 @@ public class Game {
         // for each new place to highlight
         for (Tuple<Integer, Integer, Boolean> tuple : moves) {
             // update the board to display the new highlights
-            if (tuple.getElement3()) {
+            if (tuple.getElement3() != null) {
                 Board.BOARD[tuple.getElement1()][tuple.getElement2()].makeDeadlyHighlight();
                 // clears of the normal highlights as you HAVE to jump if given the option
                 Checkers.getWindow().clearHighlights(false);

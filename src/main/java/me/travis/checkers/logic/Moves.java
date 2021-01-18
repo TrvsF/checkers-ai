@@ -23,10 +23,10 @@ public class Moves {
      * @param x2 X of spot to check
      * @param y2 Y of spot to check
      */
-    public static boolean canMove(int x1, int y1, int x2, int y2) {
+    public static void canMove(int x1, int y1, int x2, int y2, Man man) {
 
         if (isOutOfBounds(x1) || isOutOfBounds(x2) || isOutOfBounds(y1) || isOutOfBounds(y2)) {
-            return false;
+            return;
         }
 
         int teamToMove = Board.BOARD[x1][y1].getTeam();
@@ -35,15 +35,14 @@ public class Moves {
         // if the spot if vacant add to list of return true
         if (teamToMoveTo == 0) {
             LIST_OF_MOVES.add(Tuple.create(x2, y2, false));
-            return true;
+            return;
         }
 
         // returns true if the spot is deadly
         if (teamToMoveTo == teamToMove * -1) {
-            return canJump(x1, y1, x2, y2);
+            canJump(x1, y1, x2, y2, man);
         }
 
-        return false;
     }
 
     /**
@@ -53,24 +52,20 @@ public class Moves {
      * @param x2 X of the piece to be jumped
      * @param y2 Y of the piece to be jumped
      */
-    private static boolean canJump(int x1, int y1, int x2, int y2) {
+    private static void canJump(int x1, int y1, int x2, int y2, Man man) {
         int x3 = (x2 - x1) + x2;
         int y3 = (y2 - y1) + y2;
 
         if (isOutOfBounds(x3) || isOutOfBounds(y3)) {
-            return false;
+            return;
         }
 
         // if a piece can jump over more than one highlight that rather than the single jump
         if (Board.BOARD[x3][y3].getTeam() == 0) {
-//            if (getAllMoves(x3, y3, Board.BOARD[x1][y1])) {
-//                return true;
-//            }
             LIST_OF_MOVES.add(Tuple.create(x3, y3, true));
-            return true;
+            getAllMoves(x3, y3, man);
         }
 
-        return false;
     }
 
     /**
@@ -112,28 +107,25 @@ public class Moves {
      * @param x X
      * @param y Y
      */
-    public static boolean getAllMoves(int x, int y, Man man) {
+    public static void getAllMoves(int x, int y, Man man) {
 
         // theres no point checking what moves are valid if we select a blank piece
         if (man.getTeam() == 0) {
-            return false;
+            return;
         }
         // if the piece is allowed to move downwards diagonally
         boolean down = man.getTeam() == -1 || man.getTeam() == 1 && man.isKing();
         // if the piece is allowed to move upwards diagonally
         boolean up = man.getTeam() == 1 || man.getTeam() == -1 && man.isKing();
 
-        boolean hasMoved = false;
-
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 if (i == 0 || j == 0) continue;
                 if (i == 1 && !down || i == -1 && !up) continue;
-                if (canMove(x, y, x + i, y + j)) hasMoved = true;
+                canMove(x, y, x + i, y + j, man);
             }
         }
 
-        return hasMoved;
     }
 
     /**
