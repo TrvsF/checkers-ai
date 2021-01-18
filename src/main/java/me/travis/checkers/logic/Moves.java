@@ -23,7 +23,7 @@ public class Moves {
      * @param x2 X of spot to check
      * @param y2 Y of spot to check
      */
-    public static void canMove(int x1, int y1, int x2, int y2, Man man) {
+    public static void canMove(int x1, int y1, int x2, int y2) {
 
         if (isOutOfBounds(x1) || isOutOfBounds(x2) || isOutOfBounds(y1) || isOutOfBounds(y2)) {
             return;
@@ -40,7 +40,7 @@ public class Moves {
 
         // returns true if the spot is deadly
         if (teamToMoveTo == teamToMove * -1) {
-            canJump(x1, y1, x2, y2, man);
+            canJump(x1, y1, x2, y2);
         }
 
     }
@@ -52,7 +52,7 @@ public class Moves {
      * @param x2 X of the piece to be jumped
      * @param y2 Y of the piece to be jumped
      */
-    private static void canJump(int x1, int y1, int x2, int y2, Man man) {
+    private static void canJump(int x1, int y1, int x2, int y2) {
         int x3 = (x2 - x1) + x2;
         int y3 = (y2 - y1) + y2;
 
@@ -63,7 +63,48 @@ public class Moves {
         // if a piece can jump over more than one highlight that rather than the single jump
         if (Board.BOARD[x3][y3].getTeam() == 0) {
             LIST_OF_MOVES.add(Tuple.create(x3, y3, true));
-            getAllMoves(x3, y3, man);
+            checkDoubleJump(x3, y3, Board.BOARD[x1][y1].getTeam(), Board.BOARD[x1][y1].isKing());
+        }
+
+    }
+
+    private static void checkDoubleJump(int x, int y, int team, boolean king) {
+
+        if (isOutOfBounds(x) || isOutOfBounds(y)) {
+            return;
+        }
+
+        if (team == 1 && x == 0 || team == -1 && x == 9) {
+            king = true;
+        }
+
+        // if the piece is allowed to move downwards diagonally
+        boolean down = team == -1 || team == 1 && king;
+        // if the piece is allowed to move upwards diagonally
+        boolean up = team == 1 || team == -1 && king;
+
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (i == 0 || j == 0) continue;
+                if (i == 1 && !down || i == -1 && !up) continue;
+
+                if (team * -1 == Board.BOARD[x + i][y + j].getTeam()) {
+                    int x2 = x + i;
+                    int y2 = y + j;
+                    int x3 = (x2 - x) + x2;
+                    int y3 = (y2 - y) + y2;
+
+                    if (isOutOfBounds(x3) || isOutOfBounds(y3)) {
+                        return;
+                    }
+
+                    if (Board.BOARD[x3][y3].getTeam() == 0) {
+                        LIST_OF_MOVES.add(Tuple.create(x3, y3, true));
+                        checkDoubleJump(x3, y3, team, king);
+                    }
+                }
+
+            }
         }
 
     }
@@ -122,7 +163,7 @@ public class Moves {
             for (int j = -1; j <= 1; j++) {
                 if (i == 0 || j == 0) continue;
                 if (i == 1 && !down || i == -1 && !up) continue;
-                canMove(x, y, x + i, y + j, man);
+                canMove(x, y, x + i, y + j);
             }
         }
 
