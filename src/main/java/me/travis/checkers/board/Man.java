@@ -4,6 +4,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * class used to hold the information on each piece
@@ -15,6 +16,8 @@ public class Man {
     private boolean isKing;
     private String colourPath;
     private BufferedImage image;
+
+    public List<Man> piecesToKill;
 
     public Man(int team) {
         this.team = team;
@@ -101,7 +104,8 @@ public class Man {
         this.setColourPath();
     }
 
-    public void makeDeadlyHighlight() {
+    public void makeDeadlyHighlight(List<Man> piecesToKill) {
+        this.piecesToKill = piecesToKill;
         this.team = 10;
         this.isKing = false;
         this.setColourPath();

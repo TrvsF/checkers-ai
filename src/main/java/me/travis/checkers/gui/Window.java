@@ -46,6 +46,10 @@ public class Window extends JFrame {
         this.setVisible(true);
     }
 
+    public void setSubTitle(String subTitle) {
+        this.setTitle("Checkers : " + subTitle);
+    }
+
     /**
      * draws the pieces of the board
      * from the master board object
@@ -72,7 +76,7 @@ public class Window extends JFrame {
     /**
      * clears all the pieces on the board
      */
-    public void clearPieces() {
+    public void redrawPieces() {
         if (this.PIECES.isEmpty()) return;
 
         for (Piece piece : this.PIECES) {
@@ -101,10 +105,15 @@ public class Window extends JFrame {
     /**
      * refreshes the board to draw the new pos of all the pieces
      */
+    public void refresh(boolean hard) {
+        System.out.println("refreshing... ");
+        SwingUtilities.updateComponentTreeUI(this);
+        this.redrawPieces();
+    }
+
     public void refresh() {
         System.out.println("refreshing... ");
         SwingUtilities.updateComponentTreeUI(this);
-        this.clearPieces();
     }
 
 }

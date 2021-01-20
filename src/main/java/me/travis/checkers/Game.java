@@ -4,7 +4,6 @@ import me.travis.checkers.board.Board;
 import me.travis.checkers.board.Man;
 import me.travis.checkers.logic.Misc;
 import me.travis.checkers.logic.Moves;
-import me.travis.checkers.util.Pair;
 import me.travis.checkers.util.Tuple;
 
 import java.util.List;
@@ -72,7 +71,7 @@ public class Game {
             Moves.movePieces(relative[1], relative[0], selectedMan[0], selectedMan[1], team == 10);
 
             // refresh the window
-            Checkers.getWindow().refresh();
+            Checkers.getWindow().refresh(true);
 
             // move to the next turn
             this.nextTurn();
@@ -85,7 +84,7 @@ public class Game {
             return;
         }
 
-        List<Tuple<Integer, Integer, Boolean>> moves = Moves.getMoves(relative[1], relative[0]);
+        List<Tuple<Integer, Integer, List<Man>>> moves = Moves.getMoves(relative[1], relative[0]);
 
         // if there are no moves we don't care about that piece
         if (moves.isEmpty()) {
@@ -98,10 +97,10 @@ public class Game {
         boolean shouldRenderNonDeadly = true;
 
         // for each new place to highlight
-        for (Tuple<Integer, Integer, Boolean> tuple : moves) {
+        for (Tuple<Integer, Integer, List<Man>> tuple : moves) {
             // update the board to display the new highlights
             if (tuple.getElement3() != null) {
-                Board.BOARD[tuple.getElement1()][tuple.getElement2()].makeDeadlyHighlight();
+                Board.BOARD[tuple.getElement1()][tuple.getElement2()].makeDeadlyHighlight(tuple.getElement3());
                 // clears of the normal highlights as you HAVE to jump if given the option
                 Checkers.getWindow().clearHighlights(false);
                 shouldRenderNonDeadly = false;
@@ -111,7 +110,7 @@ public class Game {
         }
 
         // refresh the GUI
-        Checkers.getWindow().refresh();
+        Checkers.getWindow().refresh(true);
 
         Board.printDebugBoard();
     }

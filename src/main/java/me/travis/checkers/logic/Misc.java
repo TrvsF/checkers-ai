@@ -1,6 +1,5 @@
 package me.travis.checkers.logic;
 
-import me.travis.checkers.board.Board;
 import me.travis.checkers.gui.Window;
 
 /*
