@@ -128,12 +128,20 @@ public class Game {
 
         this.turn *= -1;
 
-        if (this.turn == 1 && whiteAI) {
-            // do white AI turn
+        if (this.turn == 1) {
+            Checkers.getWindow().setSubTitle("White's Turn");
+
+            if (whiteAI) {
+                // do white AI turn
+            }
         }
 
-        if (this.turn == -1 && blackAI) {
-            // do black AI turn
+        if (this.turn == -1) {
+            Checkers.getWindow().setSubTitle("Black's Turn");
+
+            if (blackAI) {
+                // do black AI turn
+            }
         }
     }
 
@@ -144,6 +152,7 @@ public class Game {
         Board.checkKings();
         Board.clearAllHighlights();
         gameOver = Board.shouldGameFinish();
+        Checkers.getWindow().refresh(true);
     }
 
     /**

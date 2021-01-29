@@ -27,8 +27,6 @@ public class Checkers {
         System.out.println("SETTING UP GAME IN MODE : " + mode);
         GAME = new Game(mode);
 
-        WINDOW.setSubTitle("GAME");
-
         Board.BOARD[3][2].makeKing();
         Board.BOARD[2][3].makeKing();
 

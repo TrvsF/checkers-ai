@@ -8,4 +8,10 @@ public class Tree {
         this.root = root;
     }
 
+    public Node getRoot() {
+        return this.root;
+    }
+
+
+
 }

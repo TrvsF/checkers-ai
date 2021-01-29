@@ -5,8 +5,6 @@ import me.travis.checkers.board.Man;
 import me.travis.checkers.util.Tuple;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -110,6 +108,7 @@ public class Moves {
                 if (i == 0 || j == 0) continue;
                 if (i == 1 && !down || i == -1 && !up) continue;
                 if (isOutOfBounds(x + i) || isOutOfBounds(y + j)) continue;
+                // to stop infinite loops if is king & wants to go back on itself
                 if (piecesToKill.contains(Board.BOARD[x + i][y + j])) continue;
 
                 if (team * -1 == Board.BOARD[x + i][y + j].getTeam()) {
@@ -126,6 +125,7 @@ public class Moves {
 
                         piecesToKill.add(Board.BOARD[x2][y2]);
 
+                        // recursively check if it can jump another piece
                         if (!checkDoubleJump(x3, y3, team, king, piecesToKill)) {
                             LIST_OF_MOVES.add(Tuple.create(x3, y3, piecesToKill));
                             return true;
