@@ -10,15 +10,19 @@ import me.travis.checkers.util.tree.Tree;
 import java.util.List;
 
 /**
- * handles the AI portion
+ * handles the AI portion of the program
  */
-public class Ai {
+public class AI {
 
     private Tree tree;
-    private int depth;
+    private final int depth;
 
-    public Ai(int depth) {
+    public AI(int depth) {
         this.depth = depth;
+    }
+
+    public Tree getTree() {
+        return this.tree;
     }
 
     /**
@@ -34,15 +38,20 @@ public class Ai {
 
     public void doAiR(int team, int depth, Node parent) {
 
+        // dont want to go too far for memory & processing sake
         if (this.depth >= depth) return;
 
+        // checks each piece of the board
         for (int i = 0; i < Board.BOARD.length; i++) {
             for (int j = 0; j < Board.BOARD[i].length; j++) {
 
                 Man man = Board.BOARD[i][j];
+                // if the piece is apart of the AIs team
                 if (man.getTeam() == team) {
-                    List<Tuple<Integer, Integer, List<Man>>> listOfMoves = Moves.getMoves(i, j);
 
+                    // if the piece can move add all these moves as braches to the tree and recursively make new
+                    // branches from these branches (its 7am pls)
+                    List<Tuple<Integer, Integer, List<Man>>> listOfMoves = Moves.getMoves(i, j);
                     if (listOfMoves != null) {
                         for (Tuple<Integer, Integer, List<Man>> move : listOfMoves) {
                             // reversed bc board reverse (is and js init)
