@@ -38,8 +38,8 @@ public class AI {
 
     public void doAiR(int team, int depth, Node parent) {
 
-        // dont want to go too far for memory & processing sake
-        if (this.depth >= depth) return;
+        // don't want to go too far for memory & processing sake
+        if (this.depth <= depth) return;
 
         // checks each piece of the board
         for (int i = 0; i < Board.BOARD.length; i++) {
@@ -49,7 +49,7 @@ public class AI {
                 // if the piece is apart of the AIs team
                 if (man.getTeam() == team) {
 
-                    // if the piece can move add all these moves as braches to the tree and recursively make new
+                    // if the piece can move add all these moves as branches to the tree and recursively make new
                     // branches from these branches (its 7am pls)
                     List<Tuple<Integer, Integer, List<Man>>> listOfMoves = Moves.getMoves(i, j);
                     if (listOfMoves != null) {

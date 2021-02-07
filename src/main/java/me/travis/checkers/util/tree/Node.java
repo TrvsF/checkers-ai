@@ -1,6 +1,5 @@
 package me.travis.checkers.util.tree;
 
-import me.travis.checkers.board.Board;
 import me.travis.checkers.board.Man;
 import me.travis.checkers.logic.Moves;
 import me.travis.checkers.util.Tuple;
