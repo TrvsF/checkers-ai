@@ -166,6 +166,26 @@ public class Moves {
         }
     }
 
+    /**
+     * simulate a move on a fake board
+     * @param x1 starting X
+     * @param y1 starting Y
+     * @param x2 end X
+     * @param y2 end Y
+     */
+    public static Man[][] simMovePieces(int x1, int y1, int x2, int y2, boolean deadly) {
+        Man[][] board = Board.BOARD;
+        Man temp = board[x1][y1];
+        board[x1][y1] = board[x2][y2];
+        board[x2][y2] = temp;
+        if (deadly) {
+            for (Man man : temp.piecesToKill) {
+                man.makeNull();
+            }
+        }
+        return board;
+    }
+
     public static List<Tuple<Integer, Integer, List<Man>>> getMoves(int x, int y) {
         LIST_OF_MOVES.clear();
 
