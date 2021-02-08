@@ -1,5 +1,6 @@
 package me.travis.checkers;
 
+import me.travis.checkers.ai.AI;
 import me.travis.checkers.board.Board;
 import me.travis.checkers.board.Man;
 import me.travis.checkers.gui.Window;
@@ -14,6 +15,8 @@ public class Checkers {
 
     private static Game GAME;
 
+    private static AI AI;
+
     public static void main(String[] args) {
 
         System.out.println("STARTING CHECKERS...");
@@ -27,16 +30,22 @@ public class Checkers {
         System.out.println("SETTING UP GAME IN MODE : " + mode);
         GAME = new Game(mode);
 
-        Board.BOARD[3][2].makeKing();
-        Board.BOARD[2][3].makeKing();
-
-        Board.BOARD[3][4] = new Man(1);
-        Board.BOARD[5][6] = new Man(1);
-        Board.BOARD[4][5].makeNull();
-        Board.BOARD[6][7].makeNull();
+//        Board.BOARD[3][2].makeKing();
+//        Board.BOARD[2][3].makeKing();
+//
+//        Board.BOARD[3][4] = new Man(1);
+//        Board.BOARD[5][6] = new Man(1);
+//        Board.BOARD[4][5].makeNull();
+//        Board.BOARD[6][7].makeNull();
 
         WINDOW.refresh(true);
         WINDOW.refresh();
+
+        AI = new AI(3, 1);
+
+        AI.populate();
+        System.out.println(AI.countChildren());
+
     }
 
     public static Window getWindow() {

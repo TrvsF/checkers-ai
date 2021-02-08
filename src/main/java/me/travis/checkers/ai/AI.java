@@ -15,10 +15,12 @@ import java.util.List;
 public class AI {
 
     private Tree tree;
+    private final int team;
     private final int depth;
 
-    public AI(int depth) {
+    public AI(int depth, int team) {
         this.depth = depth;
+        this.team = team;
     }
 
     public Tree getTree() {
@@ -27,16 +29,15 @@ public class AI {
 
     /**
      * populates a tree of all valid moves to a certain depth
-     * @param team the team of the AI
      */
-    public void doAi(int team) {
-        Node root = new Node(Board.BOARD, team);
+    public void populate() {
+        Node root = new Node(Board.BOARD, this.team);
         this.tree = new Tree(root);
 
-        this.doAiR(team, 0, root);
+        this.populateR(0, root);
     }
 
-    public void doAiR(int team, int depth, Node parent) {
+    private void populateR(int depth, Node parent) {
 
         // don't want to go too far for memory & processing sake
         if (this.depth <= depth) return;
@@ -47,7 +48,7 @@ public class AI {
 
                 Man man = Board.BOARD[i][j];
                 // if the piece is apart of the AIs team
-                if (man.getTeam() == team) {
+                if (man.getTeam() == this.team) {
 
                     // if the piece can move add all these moves as branches to the tree and recursively make new
                     // branches from these branches (its 7am pls)
@@ -55,14 +56,27 @@ public class AI {
                     if (listOfMoves != null) {
                         for (Tuple<Integer, Integer, List<Man>> move : listOfMoves) {
                             // reversed bc board reverse (is and js init)
-                            Node child = new Node(Moves.simMovePieces(j, i, move.getElement2(), move.getElement1(), move.getElement3() != null), team);
+                            Node child = new Node(Moves.simMovePieces(j, i, move.getElement2(), move.getElement1(), move.getElement3() != null), this.team);
                             parent.addChild(child);
-                            this.doAiR(team, depth + 1, child);
+                            this.populateR(depth + 1, child);
                         }
                     }
                 }
             }
         }
+    }
+
+    public int countChildren() {
+        if (this.tree.getRoot() == null) return 0;
+        return this.countChildrenR(this.tree.getRoot(), 0);
+    }
+
+    private int countChildrenR(Node node, int count) {
+        if (node.getChildren() == null) return 0;
+        for (Node child : node.getChildren()) {
+            countChildrenR(child, count++);
+        }
+        return count;
     }
 
 }

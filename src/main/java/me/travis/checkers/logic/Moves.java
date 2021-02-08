@@ -2,10 +2,12 @@ package me.travis.checkers.logic;
 
 import me.travis.checkers.board.Board;
 import me.travis.checkers.board.Man;
+import me.travis.checkers.util.Arrays;
 import me.travis.checkers.util.Tuple;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * handles the logic of were the pieces may move
@@ -174,16 +176,16 @@ public class Moves {
      * @param y2 end Y
      */
     public static Man[][] simMovePieces(int x1, int y1, int x2, int y2, boolean deadly) {
-        Man[][] board = Board.BOARD;
-        Man temp = board[x1][y1];
-        board[x1][y1] = board[x2][y2];
-        board[x2][y2] = temp;
+        Man[][] boardClone = Arrays.cloneBoard();
+        Man temp = boardClone[x1][y1];
+        boardClone[x1][y1] = boardClone[x2][y2];
+        boardClone[x2][y2] = temp;
         if (deadly) {
             for (Man man : temp.piecesToKill) {
                 man.makeNull();
             }
         }
-        return board;
+        return boardClone;
     }
 
     public static List<Tuple<Integer, Integer, List<Man>>> getMoves(int x, int y) {
