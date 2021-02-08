@@ -193,7 +193,7 @@ public class Moves {
 
         getAllMoves(x, y, Board.BOARD[x][y]);
 
-        return LIST_OF_MOVES;
+        return new ArrayList<>(LIST_OF_MOVES);
     }
 
     /**

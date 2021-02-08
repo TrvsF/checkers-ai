@@ -7,6 +7,7 @@ import me.travis.checkers.util.Tuple;
 import me.travis.checkers.util.tree.Node;
 import me.travis.checkers.util.tree.Tree;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -38,7 +39,6 @@ public class AI {
     }
 
     private void populateR(int depth, Node parent) {
-
         // don't want to go too far for memory & processing sake
         if (this.depth <= depth) return;
 
@@ -53,13 +53,11 @@ public class AI {
                     // if the piece can move add all these moves as branches to the tree and recursively make new
                     // branches from these branches (its 7am pls)
                     List<Tuple<Integer, Integer, List<Man>>> listOfMoves = Moves.getMoves(i, j);
-                    if (listOfMoves != null) {
-                        for (Tuple<Integer, Integer, List<Man>> move : listOfMoves) {
-                            // reversed bc board reverse (is and js init)
-                            Node child = new Node(Moves.simMovePieces(j, i, move.getElement2(), move.getElement1(), move.getElement3() != null), this.team);
-                            parent.addChild(child);
-                            this.populateR(depth + 1, child);
-                        }
+
+                    for (Tuple<Integer, Integer, List<Man>> tuple : listOfMoves) {
+                        Node child = new Node(Moves.simMovePieces(j, i, tuple.getElement2(), tuple.getElement1(), tuple.getElement3() != null), this.team);
+                        parent.addChild(child);
+                        this.populateR(depth + 1, child);
                     }
                 }
             }
