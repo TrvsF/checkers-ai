@@ -2,12 +2,12 @@ package me.travis.checkers.logic;
 
 import me.travis.checkers.board.Board;
 import me.travis.checkers.board.Man;
-import me.travis.checkers.util.Arrays;
+import me.travis.checkers.util.BoardU;
+import me.travis.checkers.util.Pair;
 import me.travis.checkers.util.Tuple;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * handles the logic of were the pieces may move
@@ -18,6 +18,9 @@ public class Moves {
     // list of moves object, a list of all the possible moves, contains their x, y, and if the jump is 'deadly'
     private static final List<Tuple<Integer, Integer, List<Man>>> LIST_OF_MOVES = new ArrayList<>();
 
+    // same as above, but stores the x and y of the pieces to kill rather than the actual pieces so calcs can be run
+    private static final List<Tuple<Integer, Integer, List<Pair<Integer, Integer>>>> LIST_OF_MOVES_AI = new ArrayList<>();
+
     /**
      * checks if a piece can move to another and adds the move to the list of valid moves
      * @param x1 X of moving piece
@@ -25,7 +28,7 @@ public class Moves {
      * @param x2 X of spot to check
      * @param y2 Y of spot to check
      */
-    public static void canMove(int x1, int y1, int x2, int y2) {
+    public static void canMove(int x1, int y1, int x2, int y2, boolean AI) {
 
         if (isOutOfBounds(x1) || isOutOfBounds(x2) || isOutOfBounds(y1) || isOutOfBounds(y2)) {
             return;
@@ -36,12 +39,16 @@ public class Moves {
 
         // returns true if the spot is deadly
         if (teamToMoveTo == teamToMove * -1) {
-            if(canJump(x1, y1, x2, y2)) return;
+            if(canJump(x1, y1, x2, y2, AI)) return;
         }
 
         // if the spot if vacant add to list of return true
         if (teamToMoveTo == 0) {
-            LIST_OF_MOVES.add(Tuple.create(x2, y2, null));
+            if (AI) {
+                LIST_OF_MOVES_AI.add(Tuple.create(x2, y2, null));
+            } else {
+                LIST_OF_MOVES.add(Tuple.create(x2, y2, null));
+            }
         }
 
     }
@@ -53,7 +60,7 @@ public class Moves {
      * @param x2 X of the piece to be jumped
      * @param y2 Y of the piece to be jumped
      */
-    private static boolean canJump(int x1, int y1, int x2, int y2) {
+    private static boolean canJump(int x1, int y1, int x2, int y2, Boolean AI) {
         int x3 = (x2 - x1) + x2;
         int y3 = (y2 - y1) + y2;
 
@@ -64,15 +71,87 @@ public class Moves {
         // if a piece can jump over more than one highlight that rather than the single jump
         if (Board.BOARD[x3][y3].getTeam() == 0) {
 
-            List<Man> listToKill = new ArrayList<>();
-            listToKill.add(Board.BOARD[x2][y2]);
+            if (AI) {
+                List<Pair<Integer, Integer>> listToKill = new ArrayList<>();
+                listToKill.add(Pair.create(x2, y2));
 
-            if (!checkDoubleJump(x3, y3, Board.BOARD[x1][y1].getTeam(), Board.BOARD[x1][y1].isKing(), listToKill)) {
-                LIST_OF_MOVES.add(Tuple.create(x3, y3, listToKill));
+                if (!checkDoubleJumpAI(x3, y3, Board.BOARD[x1][y1].getTeam(), Board.BOARD[x1][y1].isKing(), listToKill)) {
+                    LIST_OF_MOVES_AI.add(Tuple.create(x3, y3, listToKill));
+                }
+
+            } else {
+                List<Man> listToKill = new ArrayList<>();
+                listToKill.add(Board.BOARD[x2][y2]);
+
+                if (!checkDoubleJump(x3, y3, Board.BOARD[x1][y1].getTeam(), Board.BOARD[x1][y1].isKing(), listToKill)) {
+                    LIST_OF_MOVES.add(Tuple.create(x3, y3, listToKill));
+                }
+
             }
 
             return true;
 
+        }
+
+        return false;
+
+    }
+
+    private static boolean checkDoubleJumpAI(int x, int y, int team, boolean king, List<Pair<Integer, Integer>> piecesToKill) {
+
+        if (isOutOfBounds(x) || isOutOfBounds(y)) {
+            return false;
+        }
+
+        if (team == 1 && x == 0 || team == -1 && x == 9) {
+            king = true;
+        }
+
+        // if the piece is allowed to move downwards diagonally
+        boolean down = team == -1 || team == 1 && king;
+        // if the piece is allowed to move upwards diagonally
+        boolean up = team == 1 || team == -1 && king;
+
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+
+                // error / oob checks
+                if (i == 0 || j == 0) continue;
+                if (i == 1 && !down || i == -1 && !up) continue;
+                if (isOutOfBounds(x + i) || isOutOfBounds(y + j)) continue;
+                // to stop infinite loops if is king & wants to go back on itself
+                boolean stop = false;
+                for (Pair<Integer, Integer> pair : piecesToKill) {
+                    if (pair.getElement1() == x + i && pair.getElement2() == y + j) {
+                        stop = true;
+                        break;
+                    }
+                }
+                if (stop) continue;
+
+                if (team * -1 == Board.BOARD[x + i][y + j].getTeam()) {
+                    int x2 = x + i;
+                    int y2 = y + j;
+                    int x3 = (x2 - x) + x2;
+                    int y3 = (y2 - y) + y2;
+
+                    if (isOutOfBounds(x3) || isOutOfBounds(y3)) {
+                        return false;
+                    }
+
+                    if (Board.BOARD[x3][y3].getTeam() == 0) {
+
+                        piecesToKill.add(Pair.create(x2, y2));
+
+                        // recursively check if it can jump another piece
+                        if (!checkDoubleJumpAI(x3, y3, team, king, piecesToKill)) {
+                            LIST_OF_MOVES_AI.add(Tuple.create(x3, y3, piecesToKill));
+                            return true;
+                        }
+                    }
+                }
+
+            }
         }
 
         return false;
@@ -175,14 +254,14 @@ public class Moves {
      * @param x2 end X
      * @param y2 end Y
      */
-    public static Man[][] simMovePieces(int x1, int y1, int x2, int y2, boolean deadly) {
-        Man[][] boardClone = Arrays.cloneBoard();
+    public static Man[][] simMovePieces(int x1, int y1, int x2, int y2, List<Pair<Integer, Integer>> kills) {
+        Man[][] boardClone = BoardU.cloneBoard();
         Man temp = boardClone[x1][y1];
         boardClone[x1][y1] = boardClone[x2][y2];
         boardClone[x2][y2] = temp;
-        if (deadly) {
-            for (Man man : temp.piecesToKill) {
-                man.makeNull();
+        if (kills != null) {
+            for (Pair<Integer, Integer> pair : kills) {
+                boardClone[pair.getElement1()][pair.getElement2()].makeNull();
             }
         }
         return boardClone;
@@ -191,9 +270,17 @@ public class Moves {
     public static List<Tuple<Integer, Integer, List<Man>>> getMoves(int x, int y) {
         LIST_OF_MOVES.clear();
 
-        getAllMoves(x, y, Board.BOARD[x][y]);
+        getAllMoves(x, y, Board.BOARD[x][y], false);
 
         return new ArrayList<>(LIST_OF_MOVES);
+    }
+
+    public static List<Tuple<Integer, Integer, List<Pair<Integer, Integer>>>> getMovesAI(int x, int y, Man[][] board) {
+        LIST_OF_MOVES_AI.clear();
+
+        getAllMoves(x, y, board[x][y], true);
+
+        return new ArrayList<>(LIST_OF_MOVES_AI);
     }
 
     /**
@@ -201,7 +288,7 @@ public class Moves {
      * @param x X
      * @param y Y
      */
-    public static void getAllMoves(int x, int y, Man man) {
+    public static void getAllMoves(int x, int y, Man man, boolean AI) {
 
         // theres no point checking what moves are valid if we select a blank piece
         if (man.getTeam() == 0) {
@@ -216,7 +303,7 @@ public class Moves {
             for (int j = -1; j <= 1; j++) {
                 if (i == 0 || j == 0) continue;
                 if (i == 1 && !down || i == -1 && !up) continue;
-                canMove(x, y, x + i, y + j);
+                canMove(x, y, x + i, y + j, AI);
             }
         }
 

@@ -93,19 +93,6 @@ public class Board {
     }
 
     /**
-     * prints out the board to the console
-     * used for debugging (hence the name)
-     */
-    public static void printDebugBoard() {
-        for (Man[] men : BOARD) {
-            for (Man man : men) {
-                System.out.print((man.getTeam() < 0 || man.getTeam() > 9 ? " " : "  ") + man.getTeam());
-            }
-            System.out.print("\n");
-        }
-    }
-
-    /**
      * checks if there are any pieces on the board that should be kings and makes them a king
      */
     public static void checkKings() {

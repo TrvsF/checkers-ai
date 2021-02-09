@@ -4,6 +4,7 @@ import me.travis.checkers.board.Board;
 import me.travis.checkers.board.Man;
 import me.travis.checkers.logic.Misc;
 import me.travis.checkers.logic.Moves;
+import me.travis.checkers.util.BoardU;
 import me.travis.checkers.util.Tuple;
 
 import java.util.List;
@@ -112,7 +113,7 @@ public class Game {
         // refresh the GUI
         Checkers.getWindow().refresh(true);
 
-        Board.printDebugBoard();
+        BoardU.printDebugBoard();
     }
 
     /**

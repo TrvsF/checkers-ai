@@ -1,9 +1,8 @@
 package me.travis.checkers;
 
 import me.travis.checkers.ai.AI;
-import me.travis.checkers.board.Board;
-import me.travis.checkers.board.Man;
 import me.travis.checkers.gui.Window;
+import me.travis.checkers.util.BoardU;
 
 /**
  * main class of the program
@@ -21,7 +20,7 @@ public class Checkers {
 
         System.out.println("STARTING CHECKERS...");
 
-        Board.printDebugBoard();
+        BoardU.printDebugBoard();
 
         System.out.println("CREATING GUI...");
         WINDOW = new Window();
@@ -44,7 +43,8 @@ public class Checkers {
         AI = new AI(3, 1);
 
         AI.populate();
-        System.out.println(AI.countChildren());
+        System.out.println("children : " + AI.getChildren());
+        BoardU.printDebugBoard(AI.getNode(0).getValue());
 
     }
 
