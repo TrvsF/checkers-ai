@@ -5,8 +5,6 @@ import me.travis.checkers.board.Man;
 
 public class BoardU {
 
-    private static int count = 0;
-
     /**
      * clones the board for use for AI stuffs
      * cant just do normal ways bc thats clone by reference and we want clone by value
@@ -18,9 +16,28 @@ public class BoardU {
         Man[][] clone = new Man[10][];
         for (int i = 0; i < Board.BOARD.length; i++) {
             clone[i] = new Man[10];
-            System.arraycopy(Board.BOARD[i], 0, clone[i], 0, Board.BOARD[i].length);
+            for (int j = 0; j < clone[i].length; j++) {
+                clone[i][j] = new Man(Board.BOARD[i][j]);
+            }
         }
-        count++;
+        return clone;
+    }
+
+    /**
+     * clones the board for use for AI stuffs
+     * cant just do normal ways bc thats clone by reference and we want clone by value
+     * so yknow
+     * it doesnt move the board around
+     * @return clone of board
+     */
+    public static Man[][] cloneBoard(Man[][] board) {
+        Man[][] clone = new Man[10][];
+        for (int i = 0; i < board.length; i++) {
+            clone[i] = new Man[10];
+            for (int j = 0; j < clone[i].length; j++) {
+                clone[i][j] = new Man(board[i][j]);
+            }
+        }
         return clone;
     }
 
@@ -35,6 +52,7 @@ public class BoardU {
             }
             System.out.print("\n");
         }
+        System.out.print("\n");
     }
 
     /**
@@ -48,6 +66,7 @@ public class BoardU {
             }
             System.out.print("\n");
         }
+        System.out.print("\n");
     }
 
 }

@@ -62,7 +62,7 @@ public class AI {
                     List<Tuple<Integer, Integer, List<Pair<Integer, Integer>>>> listOfMoves = Moves.getMovesAI(i, j, parent.getValue());
 
                     for (Tuple<Integer, Integer, List<Pair<Integer, Integer>>> tuple : listOfMoves) {
-                        Node child = new Node(Moves.simMovePieces(j, i, tuple.getElement2(), tuple.getElement1(), tuple.getElement3()), this.team);
+                        Node child = new Node(Moves.simMovePieces(j, i, tuple.getElement2(), tuple.getElement1(), tuple.getElement3(), parent.getValue()), this.team);
                         parent.addChild(child);
                         this.children++;
                         this.populateR(depth + 1, child, team * -1);

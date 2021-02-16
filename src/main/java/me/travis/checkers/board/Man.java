@@ -25,6 +25,12 @@ public class Man {
         this.setColourPath();
     }
 
+    public Man(Man man) {
+        this.team = man.getTeam();
+        this.isKing = man.isKing();
+        this.setColourPath();
+    }
+
     /**
      * sets the image of the man
      */
@@ -61,6 +67,12 @@ public class Man {
     public BufferedImage getImage() {
         return this.image;
     }
+
+    /**
+     * sets team to given int
+     * @param team new team
+     */
+    public void setTeam(int team) {this.team = team;}
 
     /**
      * @return the team of the man

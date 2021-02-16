@@ -45,7 +45,7 @@ public class Moves {
         // if the spot if vacant add to list of return true
         if (teamToMoveTo == 0) {
             if (AI) {
-                LIST_OF_MOVES_AI.add(Tuple.create(x2, y2, null));
+                LIST_OF_MOVES_AI.add(Tuple.create(x2, y2, new ArrayList<>()));
             } else {
                 LIST_OF_MOVES.add(Tuple.create(x2, y2, null));
             }
@@ -254,16 +254,24 @@ public class Moves {
      * @param x2 end X
      * @param y2 end Y
      */
-    public static Man[][] simMovePieces(int x1, int y1, int x2, int y2, List<Pair<Integer, Integer>> kills) {
-        Man[][] boardClone = BoardU.cloneBoard();
-        Man temp = boardClone[x1][y1];
-        boardClone[x1][y1] = boardClone[x2][y2];
+    public static Man[][] simMovePieces(int x1, int y1, int x2, int y2, List<Pair<Integer, Integer>> kills, Man[][] board) {
+//        System.out.println("found move!");
+//        System.out.println("moving piece " + x1 + "," + y1);
+//        System.out.println("to " + x2 + "," + y2);
+        Man[][] boardClone = BoardU.cloneBoard(board);
+
+//        BoardU.printDebugBoard(boardClone);
+
+        Man temp = new Man(boardClone[x1][y1]);
+        boardClone[x1][y1] = new Man(boardClone[x2][y2]);
         boardClone[x2][y2] = temp;
-        if (kills != null) {
+
+        if (!kills.isEmpty()) {
             for (Pair<Integer, Integer> pair : kills) {
                 boardClone[pair.getElement1()][pair.getElement2()].makeNull();
             }
         }
+//        BoardU.printDebugBoard(boardClone);
         return boardClone;
     }
 

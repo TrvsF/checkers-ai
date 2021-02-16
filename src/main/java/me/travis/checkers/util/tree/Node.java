@@ -2,6 +2,7 @@ package me.travis.checkers.util.tree;
 
 import me.travis.checkers.board.Man;
 import me.travis.checkers.logic.Moves;
+import me.travis.checkers.util.Pair;
 import me.travis.checkers.util.Tuple;
 
 import java.util.ArrayList;
@@ -59,14 +60,12 @@ public class Node {
                         score += 2;
                     }
 
-                    List<Tuple<Integer, Integer, List<Man>>> moves = Moves.getMoves(i, j);
+                    List<Tuple<Integer, Integer, List<Pair<Integer, Integer>>>> moves = Moves.getMovesAI(i, j, this.value);
 
-                    if (moves != null) {
+                    if (!moves.isEmpty()) {
                         score += 1;
-                        for (Tuple<Integer, Integer, List<Man>> tuple : moves) {
-                            if (tuple.getElement3() != null) {
-                                score += 5;
-                            }
+                        for (Tuple<Integer, Integer, List<Pair<Integer, Integer>>> tuple : moves) {
+                            score += tuple.getElement3().size() * 5;
                         }
                     }
 
