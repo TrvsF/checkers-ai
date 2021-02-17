@@ -89,4 +89,51 @@ public class AI {
         return count;
     }
 
+    private int minMaxAB(Node node, int depth, int a, int b) {
+        if (depth <= 0 || isTerminal(node)) {
+            return node.rate();
+        }
+        if (node.getTeam() == this.team) {
+            int currentA = Integer.MIN_VALUE;
+            for (Node child : node.getChildren()) {
+                currentA = Math.max(currentA, minMaxAB(child, depth - 1, a, b));
+                a = Math.max(a, currentA);
+                if (a >= b) {
+                    return a;
+                }
+            }
+            return currentA;
+        }
+        int currentB = Integer.MAX_VALUE;
+        for (Node child : node.getChildren()) {
+            currentB = Math.min(currentB, minMaxAB(child, depth - 1, a, b));
+            b = Math.min(b, currentB);
+            if (b <= a) {
+                return b;
+            }
+        }
+        return currentB;
+    }
+
+    public Man[][] getBestMove() {
+        if (isTerminal(this.tree.getRoot())) {
+            System.out.println("NO CHILDREN, GAME SHOULD BE OVER");
+            return null;
+        }
+        Man[][] bestMove = null;
+        int bestScore = Integer.MIN_VALUE;
+        for (Node child : this.tree.getRoot().getChildren()) {
+            int a = minMaxAB(child, this.depth, bestScore, Integer.MAX_VALUE);
+            if (a > bestScore || bestMove == null) {
+                bestMove = child.getValue();
+                bestScore = a;
+            }
+        }
+        return bestMove;
+    }
+
+    private boolean isTerminal(Node node) {
+        return node.getChildren().isEmpty();
+    }
+
 }
