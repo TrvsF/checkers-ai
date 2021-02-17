@@ -255,12 +255,9 @@ public class Moves {
      * @param y2 end Y
      */
     public static Man[][] simMovePieces(int x1, int y1, int x2, int y2, List<Pair<Integer, Integer>> kills, Man[][] board) {
-//        System.out.println("found move!");
-//        System.out.println("moving piece " + x1 + "," + y1);
-//        System.out.println("to " + x2 + "," + y2);
         Man[][] boardClone = BoardU.cloneBoard(board);
 
-//        BoardU.printDebugBoard(boardClone);
+        BoardU.printDebugBoard(boardClone);
 
         Man temp = new Man(boardClone[x1][y1]);
         boardClone[x1][y1] = new Man(boardClone[x2][y2]);
@@ -271,7 +268,7 @@ public class Moves {
                 boardClone[pair.getElement1()][pair.getElement2()].makeNull();
             }
         }
-//        BoardU.printDebugBoard(boardClone);
+        BoardU.printDebugBoard(boardClone);
         return boardClone;
     }
 
