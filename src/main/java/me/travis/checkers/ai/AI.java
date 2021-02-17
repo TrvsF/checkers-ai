@@ -89,6 +89,15 @@ public class AI {
         return count;
     }
 
+    /**
+     * the min max method with AB pruning to ease memory useage, a better explanation of what this does
+     * can be found in the paperwork
+     * @param node Node to check
+     * @param depth Depth of the current pass
+     * @param a Alpha
+     * @param b Beta
+     * @return The best score
+     */
     private int minMaxAB(Node node, int depth, int a, int b) {
         if (depth <= 0 || isTerminal(node)) {
             return node.rate();
@@ -115,6 +124,10 @@ public class AI {
         return currentB;
     }
 
+    /**
+     * get the best move
+     * @return The Board state of the best move
+     */
     public Man[][] getBestMove() {
         if (isTerminal(this.tree.getRoot())) {
             System.out.println("NO CHILDREN, GAME SHOULD BE OVER");
@@ -132,6 +145,10 @@ public class AI {
         return bestMove;
     }
 
+    /**
+     * @param node Node to check
+     * @return if the node has any children
+     */
     private boolean isTerminal(Node node) {
         return node.getChildren().isEmpty();
     }
