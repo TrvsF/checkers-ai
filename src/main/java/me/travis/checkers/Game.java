@@ -7,6 +7,7 @@ import me.travis.checkers.logic.Misc;
 import me.travis.checkers.logic.Moves;
 import me.travis.checkers.util.BoardU;
 import me.travis.checkers.util.Tuple;
+import me.travis.checkers.util.tree.Node;
 
 import java.util.List;
 
@@ -15,6 +16,9 @@ public class Game {
     private int turn;
 
     private int[] selectedMan;
+
+    private final AI wAI;
+    private final AI bAI;
 
     private final boolean whiteAI;
     private final boolean blackAI;
@@ -32,9 +36,23 @@ public class Game {
         this.turn = 1;
         this.selectedMan = null;
 
-        this.whiteAI = (mode == 2);
         this.blackAI = (mode == 1 || mode == 2);
+        this.whiteAI = (mode == 2);
         this.gameOver = false;
+
+        if (this.blackAI) {
+            bAI = new AI(2, -1);
+            bAI.populate();
+        } else {
+            bAI = null;
+        }
+
+        if (this.whiteAI) {
+            wAI = new AI(2, 1);
+            wAI.populate();
+        } else {
+            wAI = null;
+        }
 
         Board.resetBoard();
     }
@@ -134,9 +152,10 @@ public class Game {
             Checkers.getWindow().setSubTitle("White's Turn");
 
             if (whiteAI) {
-                AI ai = new AI(1, 1);
-                ai.populate();
-                Board.BOARD = ai.getBestMove();
+                Node newMove = wAI.getBestMove();
+                Board.BOARD = newMove.getValue();
+                wAI.repopulate(newMove);
+
                 Checkers.getWindow().refresh(true);
                 this.nextTurn();
             }
@@ -146,9 +165,10 @@ public class Game {
             Checkers.getWindow().setSubTitle("Black's Turn");
 
             if (blackAI) {
-                AI ai = new AI(1, -1);
-                ai.populate();
-                Board.BOARD = ai.getBestMove();
+                Node newMove = bAI.getBestMove();
+                Board.BOARD = newMove.getValue();
+                bAI.repopulate(newMove);
+
                 Checkers.getWindow().refresh(true);
                 this.nextTurn();
             }

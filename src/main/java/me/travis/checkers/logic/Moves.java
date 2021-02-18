@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * handles the logic of were the pieces may move
- * only handles the board object stored in the Board class, nothing with GUI is done here
+ * only handles the board object(s), visual changes are not done here
  */
 public class Moves {
 
@@ -173,7 +173,7 @@ public class Moves {
             return false;
         }
 
-        if (team == 1 && x == 0 || team == -1 && x == 9) {
+        if (team == 1 && x == 0 || team == -1 && x == Board.BOARD.length - 1) {
             king = true;
         }
 
@@ -226,7 +226,7 @@ public class Moves {
      * @return if a given coordinate will be out of bounds of the board
      */
     private static boolean isOutOfBounds(int i) {
-        return i < 0 || i > 9;
+        return i < 0 || i > Board.BOARD.length - 1;
     }
 
     /**
@@ -266,9 +266,6 @@ public class Moves {
                 boardClone[pair.getElement1()][pair.getElement2()].makeNull();
             }
         }
-
-        System.out.println("FOUND FOLLOWING MOVE");
-        BoardU.printDebugBoard(boardClone);
 
         return boardClone;
     }

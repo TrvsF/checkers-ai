@@ -84,8 +84,7 @@ public class Node {
             }
         }
 
-        // times by the team so that black pieces are trying to min and white are trying to max
-        return score * this.team;
+        return score;
     }
 
     public void addChild(Node node) {

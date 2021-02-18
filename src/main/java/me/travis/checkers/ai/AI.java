@@ -66,20 +66,15 @@ public class AI {
         for (int i = 0; i < parent.getValue().length; i++) {
             for (int j = 0; j < parent.getValue()[i].length; j++) {
 
-                Man man = parent.getValue()[i][j];
-                // if the piece is apart of the AIs team
-                if (man.getTeam() == team) {
+                // if the piece can move add all these moves as branches to the tree and recursively make new
+                // branches from these branches (its 7am pls)
+                List<Tuple<Integer, Integer, List<Pair<Integer, Integer>>>> listOfMoves = Moves.getMovesAI(i, j, parent.getValue());
 
-                    // if the piece can move add all these moves as branches to the tree and recursively make new
-                    // branches from these branches (its 7am pls)
-                    List<Tuple<Integer, Integer, List<Pair<Integer, Integer>>>> listOfMoves = Moves.getMovesAI(i, j, parent.getValue());
-
-                    for (Tuple<Integer, Integer, List<Pair<Integer, Integer>>> tuple : listOfMoves) {
-                        Node child = new Node(Moves.simMovePieces(i, j, tuple.getElement1(), tuple.getElement2(), tuple.getElement3(), parent.getValue()), this.team);
-                        parent.addChild(child);
-                        this.children++;
-                        this.populateR(depth + 1, child, team * -1);
-                    }
+                for (Tuple<Integer, Integer, List<Pair<Integer, Integer>>> tuple : listOfMoves) {
+                    Node child = new Node(Moves.simMovePieces(i, j, tuple.getElement1(), tuple.getElement2(), tuple.getElement3(), parent.getValue()), this.team);
+                    parent.addChild(child);
+                    this.children++;
+                    this.populateR(depth + 1, child, team * -1);
                 }
             }
         }
@@ -115,7 +110,7 @@ public class AI {
         if (depth <= 0 || isTerminal(node)) {
             return node.rate();
         }
-        if (node.getTeam() == 1) {
+        if (node.getTeam() == this.team) {
             int currentA = Integer.MIN_VALUE;
             for (Node child : node.getChildren()) {
                 currentA = Math.max(currentA, minMaxAB(child, depth - 1, a, b));
@@ -137,24 +132,56 @@ public class AI {
         return currentB;
     }
 
+    public void repopulate(Node node) {
+        this.tree.setRoot(node);
+        this.repopulateR(node, this.depth);
+    }
+
+    private void repopulateR(Node node, int depth) {
+        if (depth > this.depth + 1) return;
+
+        if (depth >= this.depth) {
+            for (Node child : node.getChildren()) {
+                repopulateR(child, depth++);
+            }
+        } else {
+            for (int i = 0; i < node.getValue().length; i++) {
+                for (int j = 0; j < node.getValue()[i].length; j++) {
+                    // if the piece can move add all these moves as branches to the tree and recursively make new
+                    // branches from these branches (its 7am pls)
+                    List<Tuple<Integer, Integer, List<Pair<Integer, Integer>>>> listOfMoves = Moves.getMovesAI(i, j, node.getValue());
+
+                    for (Tuple<Integer, Integer, List<Pair<Integer, Integer>>> tuple : listOfMoves) {
+                        Node child = new Node(Moves.simMovePieces(i, j, tuple.getElement1(), tuple.getElement2(), tuple.getElement3(), node.getValue()), this.team);
+                        node.addChild(child);
+                        this.children++;
+                        this.populateR(depth + 1, child, team * -1);
+                    }
+                }
+            }
+        }
+
+    }
+
     /**
      * get the best move
      * @return The Board state of the best move
      */
-    public Man[][] getBestMove() {
+    public Node getBestMove() {
         if (isTerminal(this.tree.getRoot())) {
             System.out.println("NO CHILDREN, GAME SHOULD BE OVER");
             return null;
         }
-        Man[][] bestMove = null;
-        int bestScore = Integer.MIN_VALUE;
+        Node bestMove = null;
+        int bestRating = Integer.MIN_VALUE;
         for (Node child : this.tree.getRoot().getChildren()) {
-            int a = minMaxAB(child, this.depth, bestScore, Integer.MAX_VALUE);
-            if (a > bestScore || bestMove == null) {
-                bestMove = child.getValue();
-                bestScore = a;
+            int a = minMaxAB(child, this.depth, bestRating, Integer.MAX_VALUE);
+            if (a > bestRating || bestMove == null) {
+                bestMove = child;
+                bestRating = a;
             }
         }
+        System.out.println("BEST MOVE HAS A RATING OF : " + bestRating);
         return bestMove;
     }
 
