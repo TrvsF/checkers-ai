@@ -1,5 +1,6 @@
 package me.travis.checkers;
 
+import me.travis.checkers.ai.AI;
 import me.travis.checkers.board.Board;
 import me.travis.checkers.board.Man;
 import me.travis.checkers.logic.Misc;
@@ -21,7 +22,7 @@ public class Game {
 
     /**
      * sets up the start of the game
-     * the turn is set to black
+     * the turn is set to white
      * if mode is 0 it is player vs player
      * if mode is 1 it is player vs ai
      * if mode is 2 it is ai vs ai
@@ -133,7 +134,11 @@ public class Game {
             Checkers.getWindow().setSubTitle("White's Turn");
 
             if (whiteAI) {
-                // do white AI turn
+                AI ai = new AI(1, 1);
+                ai.populate();
+                Board.BOARD = ai.getBestMove();
+                Checkers.getWindow().refresh(true);
+                this.nextTurn();
             }
         }
 
@@ -141,7 +146,11 @@ public class Game {
             Checkers.getWindow().setSubTitle("Black's Turn");
 
             if (blackAI) {
-                // do black AI turn
+                AI ai = new AI(1, -1);
+                ai.populate();
+                Board.BOARD = ai.getBestMove();
+                Checkers.getWindow().refresh(true);
+                this.nextTurn();
             }
         }
     }

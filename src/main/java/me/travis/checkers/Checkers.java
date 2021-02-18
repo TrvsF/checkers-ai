@@ -25,7 +25,10 @@ public class Checkers {
         System.out.println("CREATING GUI...");
         WINDOW = new Window();
 
-        int mode = 0;
+        // 0 = pvp
+        // 1 = pva
+        // 2 = ava
+        int mode = 1;
         System.out.println("SETTING UP GAME IN MODE : " + mode);
         GAME = new Game(mode);
 
@@ -40,11 +43,13 @@ public class Checkers {
         WINDOW.refresh(true);
         WINDOW.refresh();
 
-        AI = new AI(3, 1);
-
-        AI.populate();
-        System.out.println("children : " + AI.getChildren());
-        BoardU.printDebugBoard(AI.getNode(0).getValue());
+//        AI = new AI(3, 1);
+//
+//        AI.populate();
+//        System.out.println("children : " + AI.getChildren());
+//        BoardU.printDebugBoard(AI.getNode(0).getValue());
+//
+//        BoardU.printDebugBoard(AI.getBestMove());
 
     }
 

@@ -38,6 +38,13 @@ public class AI {
      * populates a tree of all valid moves to a certain depth
      */
     public void populate() {
+
+        System.out.println("STARTING POPULATION WITH DEPTH : " + this.depth + "\nFOR TEAM : " + this.team);
+
+        System.out.println("STARTING BOARD : ");
+
+        BoardU.printDebugBoard(BoardU.cloneBoard());
+
         Node root = new Node(BoardU.cloneBoard(), this.team);
         this.tree = new Tree(root);
         this.children = 0;
@@ -45,6 +52,12 @@ public class AI {
         this.populateR(0, root, this.team);
     }
 
+    /**
+     * Populates the tree recursively
+     * @param depth The current depth of the loop
+     * @param parent The Node to get the children for
+     * @param team The team that the pieces are moving for
+     */
     private void populateR(int depth, Node parent, int team) {
         // don't want to go too far for memory & processing sake
         if (this.depth <= depth) return;
@@ -102,7 +115,7 @@ public class AI {
         if (depth <= 0 || isTerminal(node)) {
             return node.rate();
         }
-        if (node.getTeam() == this.team) {
+        if (node.getTeam() == 1) {
             int currentA = Integer.MIN_VALUE;
             for (Node child : node.getChildren()) {
                 currentA = Math.max(currentA, minMaxAB(child, depth - 1, a, b));

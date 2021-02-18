@@ -257,8 +257,6 @@ public class Moves {
     public static Man[][] simMovePieces(int x1, int y1, int x2, int y2, List<Pair<Integer, Integer>> kills, Man[][] board) {
         Man[][] boardClone = BoardU.cloneBoard(board);
 
-        BoardU.printDebugBoard(boardClone);
-
         Man temp = new Man(boardClone[x1][y1]);
         boardClone[x1][y1] = new Man(boardClone[x2][y2]);
         boardClone[x2][y2] = temp;
@@ -268,7 +266,10 @@ public class Moves {
                 boardClone[pair.getElement1()][pair.getElement2()].makeNull();
             }
         }
+
+        System.out.println("FOUND FOLLOWING MOVE");
         BoardU.printDebugBoard(boardClone);
+
         return boardClone;
     }
 
