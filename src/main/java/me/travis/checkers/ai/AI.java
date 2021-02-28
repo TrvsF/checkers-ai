@@ -1,8 +1,7 @@
 package me.travis.checkers.ai;
 
-import me.travis.checkers.board.Man;
 import me.travis.checkers.logic.Moves;
-import me.travis.checkers.util.BoardU;
+import me.travis.checkers.util.Util;
 import me.travis.checkers.util.Pair;
 import me.travis.checkers.util.Tuple;
 import me.travis.checkers.util.tree.Node;
@@ -43,9 +42,9 @@ public class AI {
 
         System.out.println("STARTING BOARD : ");
 
-        BoardU.printDebugBoard(BoardU.cloneBoard());
+        Util.printDebugBoard(Util.cloneBoard());
 
-        Node root = new Node(BoardU.cloneBoard(), this.team);
+        Node root = new Node(Util.cloneBoard(), this.team);
         this.tree = new Tree(root);
         this.children = 0;
 
@@ -163,12 +162,21 @@ public class AI {
 
     }
 
+    public Node getFirstMove() {
+        this.populate();
+        if (this.isTerminal(this.tree.getRoot())) {
+            System.out.println("NO CHILDREN, NOT GOOD");
+            return null;
+        }
+        return Util.getRandomMove(this.tree.getRoot().getChildren());
+    }
+
     /**
      * get the best move
      * @return The Board state of the best move
      */
     public Node getBestMove() {
-        if (isTerminal(this.tree.getRoot())) {
+        if (this.isTerminal(this.tree.getRoot())) {
             System.out.println("NO CHILDREN, GAME SHOULD BE OVER");
             return null;
         }

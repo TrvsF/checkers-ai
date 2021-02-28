@@ -2,7 +2,7 @@ package me.travis.checkers.logic;
 
 import me.travis.checkers.board.Board;
 import me.travis.checkers.board.Man;
-import me.travis.checkers.util.BoardU;
+import me.travis.checkers.util.Util;
 import me.travis.checkers.util.Pair;
 import me.travis.checkers.util.Tuple;
 
@@ -255,7 +255,7 @@ public class Moves {
      * @param y2 end Y
      */
     public static Man[][] simMovePieces(int x1, int y1, int x2, int y2, List<Pair<Integer, Integer>> kills, Man[][] board) {
-        Man[][] boardClone = BoardU.cloneBoard(board);
+        Man[][] boardClone = Util.cloneBoard(board);
 
         Man temp = new Man(boardClone[x1][y1]);
         boardClone[x1][y1] = new Man(boardClone[x2][y2]);

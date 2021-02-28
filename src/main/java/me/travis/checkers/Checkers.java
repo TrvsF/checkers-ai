@@ -2,7 +2,7 @@ package me.travis.checkers;
 
 import me.travis.checkers.ai.AI;
 import me.travis.checkers.gui.Window;
-import me.travis.checkers.util.BoardU;
+import me.travis.checkers.util.Util;
 
 /**
  * main class of the program
@@ -20,7 +20,7 @@ public class Checkers {
 
         System.out.println("STARTING CHECKERS...");
 
-        BoardU.printDebugBoard();
+        Util.printDebugBoard();
 
         System.out.println("CREATING GUI...");
         WINDOW = new Window();

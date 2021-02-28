@@ -2,8 +2,14 @@ package me.travis.checkers.util;
 
 import me.travis.checkers.board.Board;
 import me.travis.checkers.board.Man;
+import me.travis.checkers.util.tree.Node;
 
-public class BoardU {
+import java.util.List;
+import java.util.Random;
+
+public class Util {
+
+    private static Random random;
 
     /**
      * clones the board for use for AI stuffs
@@ -67,6 +73,10 @@ public class BoardU {
             System.out.print("\n");
         }
         System.out.print("\n");
+    }
+
+    public static Node getRandomMove(List<Node> list) {
+        return list.get(random.nextInt(list.size()));
     }
 
 }
