@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class Util {
 
-    private static Random random;
+    private static final Random random = new Random();
 
     /**
      * clones the board for use for AI stuffs

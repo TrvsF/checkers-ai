@@ -163,7 +163,6 @@ public class AI {
     }
 
     public Node getFirstMove() {
-        this.populate();
         if (this.isTerminal(this.tree.getRoot())) {
             System.out.println("NO CHILDREN, NOT GOOD");
             return null;
