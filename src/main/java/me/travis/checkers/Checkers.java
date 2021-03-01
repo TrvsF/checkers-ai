@@ -43,14 +43,6 @@ public class Checkers {
         WINDOW.refresh(true);
         WINDOW.refresh();
 
-//        AI = new AI(3, 1);
-//
-//        AI.populate();
-//        System.out.println("children : " + AI.getChildren());
-//        BoardU.printDebugBoard(AI.getNode(0).getValue());
-//
-//        BoardU.printDebugBoard(AI.getBestMove());
-
     }
 
     public static Window getWindow() {

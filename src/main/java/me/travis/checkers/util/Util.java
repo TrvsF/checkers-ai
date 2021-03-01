@@ -75,8 +75,26 @@ public class Util {
         System.out.print("\n");
     }
 
+    /**
+     * @param list the list you want to pull a random element from
+     * @return a random element from the list
+     */
     public static Node getRandomMove(List<Node> list) {
         return list.get(random.nextInt(list.size()));
+    }
+
+    public static boolean isArrayEqual(Man[][] a1, Man[][] a2) {
+
+        if (a1.length != a2.length) return false;
+
+        for (int i = 0; i < a1.length; i++) {
+            if (a1[i].length != a2[i].length) return false;
+            for (int j = 0; j < a1[i].length; j++) {
+                if (a1[i][j].getTeam() != a2[i][j].getTeam()) return false;
+            }
+        }
+
+        return true;
     }
 
 }

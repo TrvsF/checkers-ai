@@ -1,5 +1,7 @@
 package me.travis.checkers.ai;
 
+import me.travis.checkers.board.Board;
+import me.travis.checkers.board.Man;
 import me.travis.checkers.logic.Moves;
 import me.travis.checkers.util.Util;
 import me.travis.checkers.util.Pair;
@@ -17,27 +19,20 @@ public class AI {
     private Tree tree;
     private final int team;
     private final int depth;
-    private int children;
 
     public AI(int depth, int team) {
         this.depth = depth;
         this.team = team;
-        this.children = 0;
     }
 
     public Tree getTree() {
         return this.tree;
     }
 
-    public int getChildren() {
-        return this.children;
-    }
-
     /**
      * populates a tree of all valid moves to a certain depth
      */
     public void populate() {
-
         System.out.println("STARTING POPULATION WITH DEPTH : " + this.depth + "\nFOR TEAM : " + this.team);
 
         System.out.println("STARTING BOARD : ");
@@ -46,7 +41,6 @@ public class AI {
 
         Node root = new Node(Util.cloneBoard(), this.team);
         this.tree = new Tree(root);
-        this.children = 0;
 
         this.populateR(0, root, this.team);
     }
@@ -72,32 +66,74 @@ public class AI {
                 for (Tuple<Integer, Integer, List<Pair<Integer, Integer>>> tuple : listOfMoves) {
                     Node child = new Node(Moves.simMovePieces(i, j, tuple.getElement1(), tuple.getElement2(), tuple.getElement3(), parent.getValue()), this.team);
                     parent.addChild(child);
-                    this.children++;
                     this.populateR(depth + 1, child, team * -1);
                 }
             }
         }
     }
 
-    public Node getNode(int childNo) {
-        return this.tree.getRoot().getChildren().get(childNo);
-    }
-
-    public int countChildren() {
-        if (this.tree.getRoot() == null) return 0;
-        return this.countChildrenR(this.tree.getRoot(), 0);
-    }
-
-    private int countChildrenR(Node node, int count) {
-        if (node.getChildren() == null) return 0;
-        for (Node child : node.getChildren()) {
-            countChildrenR(child, count++);
-        }
-        return count;
+    /**
+     * repopulates the tree from a given node
+     * @param node the node to repopulate from
+     */
+    public void repopulate(Node node) {
+        this.tree.setRoot(node);
+        this.repopulateR(node, this.depth);
     }
 
     /**
-     * the min max method with AB pruning to ease memory useage, a better explanation of what this does
+     * repopulates the tree from the root of a given board state
+     * @param b the give board state
+     */
+    public void repopulate(Man[][] b) {
+        for (Node node : this.tree.getRoot().getChildren()) {
+            if (Util.isArrayEqual(node.getValue(), b)) {
+                this.tree.setRoot(new Node(node));
+                this.repopulateR(node, this.depth);
+            }
+        }
+    }
+
+    /**
+     * repopulates the tree recursively
+     * @param node current node
+     * @param depth current depth
+     */
+    private void repopulateR(Node node, int depth) {
+        if (depth > this.depth + 1) return;
+
+        if (depth >= this.depth) {
+            for (Node child : node.getChildren()) {
+                repopulateR(child, depth++);
+            }
+        } else {
+            for (int i = 0; i < node.getValue().length; i++) {
+                for (int j = 0; j < node.getValue()[i].length; j++) {
+                    // if the piece can move add all these moves as branches to the tree and recursively make new
+                    // branches from these branches (its 7am pls)
+                    List<Tuple<Integer, Integer, List<Pair<Integer, Integer>>>> listOfMoves = Moves.getMovesAI(i, j, node.getValue());
+
+                    for (Tuple<Integer, Integer, List<Pair<Integer, Integer>>> tuple : listOfMoves) {
+                        Node child = new Node(Moves.simMovePieces(i, j, tuple.getElement1(), tuple.getElement2(), tuple.getElement3(), node.getValue()), this.team);
+                        node.addChild(child);
+                        this.populateR(depth + 1, child, team * -1);
+                    }
+                }
+            }
+        }
+
+    }
+
+    public Node getFirstMove() {
+        if (this.isTerminal(this.tree.getRoot())) {
+            System.out.println("NO CHILDREN, NOT GOOD");
+            return null;
+        }
+        return Util.getRandomMove(this.tree.getRoot().getChildren());
+    }
+
+    /**
+     * the min max method with AB pruning to ease memory usage, a better explanation of what this does
      * can be found in the paperwork
      * @param node Node to check
      * @param depth Depth of the current pass
@@ -129,45 +165,6 @@ public class AI {
             }
         }
         return currentB;
-    }
-
-    public void repopulate(Node node) {
-        this.tree.setRoot(node);
-        this.repopulateR(node, this.depth);
-    }
-
-    private void repopulateR(Node node, int depth) {
-        if (depth > this.depth + 1) return;
-
-        if (depth >= this.depth) {
-            for (Node child : node.getChildren()) {
-                repopulateR(child, depth++);
-            }
-        } else {
-            for (int i = 0; i < node.getValue().length; i++) {
-                for (int j = 0; j < node.getValue()[i].length; j++) {
-                    // if the piece can move add all these moves as branches to the tree and recursively make new
-                    // branches from these branches (its 7am pls)
-                    List<Tuple<Integer, Integer, List<Pair<Integer, Integer>>>> listOfMoves = Moves.getMovesAI(i, j, node.getValue());
-
-                    for (Tuple<Integer, Integer, List<Pair<Integer, Integer>>> tuple : listOfMoves) {
-                        Node child = new Node(Moves.simMovePieces(i, j, tuple.getElement1(), tuple.getElement2(), tuple.getElement3(), node.getValue()), this.team);
-                        node.addChild(child);
-                        this.children++;
-                        this.populateR(depth + 1, child, team * -1);
-                    }
-                }
-            }
-        }
-
-    }
-
-    public Node getFirstMove() {
-        if (this.isTerminal(this.tree.getRoot())) {
-            System.out.println("NO CHILDREN, NOT GOOD");
-            return null;
-        }
-        return Util.getRandomMove(this.tree.getRoot().getChildren());
     }
 
     /**

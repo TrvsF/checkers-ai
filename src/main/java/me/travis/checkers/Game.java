@@ -216,12 +216,12 @@ public class Game {
         // update board to best move
         Board.BOARD = newMove.getValue();
 
-        // repopulate the tree
-        if (this.turn == 1) {
-            wAI.repopulate(newMove);
-        } else {
-            bAI.repopulate(newMove);
-        }
+//        // repopulate the tree
+//        if (this.turn == 1) {
+//            wAI.repopulate(newMove);
+//        } else {
+//            bAI.repopulate(newMove);
+//        }
 
         // refresh the board
         Checkers.getWindow().refresh(true);
