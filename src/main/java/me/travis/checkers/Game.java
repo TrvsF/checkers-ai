@@ -200,28 +200,21 @@ public class Game {
         if (this.turn == 1) {
             // if is first move
             if (this.whiteTurns == 0) {
-                newMove = wAI.getFirstMove();
+                newMove = wAI.getFirstMove(Board.BOARD);
             } else {
-                newMove = wAI.getBestMove();
+                newMove = wAI.getBestMove(Board.BOARD);
             }
         } else {
             // if is first move
             if (this.blackTurns == 0) {
-                newMove = bAI.getFirstMove();
+                newMove = bAI.getFirstMove(Board.BOARD);
             } else {
-                newMove = bAI.getBestMove();
+                newMove = bAI.getBestMove(Board.BOARD);
             }
         }
 
         // update board to best move
         Board.BOARD = newMove.getValue();
-
-//        // repopulate the tree
-//        if (this.turn == 1) {
-//            wAI.repopulate(newMove);
-//        } else {
-//            bAI.repopulate(newMove);
-//        }
 
         // refresh the board
         Checkers.getWindow().refresh(true);

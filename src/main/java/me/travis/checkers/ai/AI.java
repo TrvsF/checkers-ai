@@ -90,6 +90,7 @@ public class AI {
             if (Util.isArrayEqual(node.getValue(), b)) {
                 this.tree.setRoot(new Node(node));
                 this.repopulateR(node, this.depth);
+                return;
             }
         }
     }
@@ -122,14 +123,6 @@ public class AI {
             }
         }
 
-    }
-
-    public Node getFirstMove() {
-        if (this.isTerminal(this.tree.getRoot())) {
-            System.out.println("NO CHILDREN, NOT GOOD");
-            return null;
-        }
-        return Util.getRandomMove(this.tree.getRoot().getChildren());
     }
 
     /**
@@ -168,10 +161,25 @@ public class AI {
     }
 
     /**
+     * @return a random first move (to keep it interesting)
+     */
+    public Node getFirstMove(Man[][] currentState) {
+        this.repopulate(currentState);
+        if (this.isTerminal(this.tree.getRoot())) {
+            System.out.println("NO CHILDREN, NOT GOOD");
+            return null;
+        }
+        return Util.getRandomMove(this.tree.getRoot().getChildren());
+    }
+
+    /**
      * get the best move
      * @return The Board state of the best move
      */
-    public Node getBestMove() {
+    public Node getBestMove(Man[][] currentState) {
+        // repopulate the tree
+        this.repopulate(currentState);
+
         if (this.isTerminal(this.tree.getRoot())) {
             System.out.println("NO CHILDREN, GAME SHOULD BE OVER");
             return null;
