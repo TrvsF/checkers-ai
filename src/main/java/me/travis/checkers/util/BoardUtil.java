@@ -3,7 +3,7 @@ package me.travis.checkers.util;
 import me.travis.checkers.board.Board;
 import me.travis.checkers.board.Man;
 
-public class BoardU {
+public class BoardUtil {
 
     /**
      * clones the board for use for AI stuffs

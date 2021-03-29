@@ -1,8 +1,9 @@
 package me.travis.checkers.ai;
 
 import me.travis.checkers.board.Man;
+import me.travis.checkers.logic.Misc;
 import me.travis.checkers.logic.Moves;
-import me.travis.checkers.util.BoardU;
+import me.travis.checkers.util.BoardUtil;
 import me.travis.checkers.util.Pair;
 import me.travis.checkers.util.Tuple;
 import me.travis.checkers.util.tree.Node;
@@ -43,9 +44,9 @@ public class AI {
 
         System.out.println("STARTING BOARD : ");
 
-        BoardU.printDebugBoard(BoardU.cloneBoard());
+        BoardUtil.printDebugBoard(BoardUtil.cloneBoard());
 
-        Node root = new Node(BoardU.cloneBoard(), this.team);
+        Node root = new Node(BoardUtil.cloneBoard(), this.team);
         this.tree = new Tree(root);
         this.children = 0;
 
@@ -156,6 +157,18 @@ public class AI {
             }
         }
         return bestMove;
+    }
+
+    /**
+     * get random move
+     * @return The board state of a random move
+     */
+    public Man[][] getRandomMove() {
+        if (isTerminal(this.tree.getRoot())) {
+            System.out.println("NO CHILDREN, GAME SHOULD BE OVER");
+            return null;
+        }
+        return this.tree.getRoot().getChildren().get(Misc.getRandomIndexFromList(this.tree.getRoot().getChildren())).getValue();
     }
 
     /**
