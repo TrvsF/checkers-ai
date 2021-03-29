@@ -80,7 +80,7 @@ public class Window extends JFrame {
         if (this.PIECES.isEmpty()) return;
 
         for (Piece piece : this.PIECES) {
-            this.remove(piece);
+            piece.repaint();
         }
 
         this.PIECES.clear();

@@ -32,24 +32,8 @@ public class Checkers {
         System.out.println("SETTING UP GAME IN MODE : " + mode);
         GAME = new Game(mode);
 
-//        Board.BOARD[3][2].makeKing();
-//        Board.BOARD[2][3].makeKing();
-//
-//        Board.BOARD[3][4] = new Man(1);
-//        Board.BOARD[5][6] = new Man(1);
-//        Board.BOARD[4][5].makeNull();
-//        Board.BOARD[6][7].makeNull();
-
         WINDOW.refresh(true);
         WINDOW.refresh();
-
-//        AI = new AI(3, 1);
-//
-//        AI.populate();
-//        System.out.println("children : " + AI.getChildren());
-//        BoardU.printDebugBoard(AI.getNode(0).getValue());
-//
-//        BoardU.printDebugBoard(AI.getBestMove());
 
     }
 
