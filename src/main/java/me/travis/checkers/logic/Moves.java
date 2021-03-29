@@ -2,9 +2,9 @@ package me.travis.checkers.logic;
 
 import me.travis.checkers.board.Board;
 import me.travis.checkers.board.Man;
-import me.travis.checkers.util.Util;
 import me.travis.checkers.util.Pair;
 import me.travis.checkers.util.Tuple;
+import me.travis.checkers.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;

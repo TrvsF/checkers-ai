@@ -5,8 +5,8 @@ import me.travis.checkers.board.Board;
 import me.travis.checkers.board.Man;
 import me.travis.checkers.logic.Misc;
 import me.travis.checkers.logic.Moves;
-import me.travis.checkers.util.Util;
 import me.travis.checkers.util.Tuple;
+import me.travis.checkers.util.Util;
 import me.travis.checkers.util.tree.Node;
 
 import java.util.List;
@@ -49,14 +49,12 @@ public class Game {
 
         if (this.blackAI) {
             bAI = new AI(2, -1);
-            bAI.populate();
         } else {
             bAI = null;
         }
 
         if (this.whiteAI) {
             wAI = new AI(2, 1);
-            wAI.populate();
         } else {
             wAI = null;
         }
@@ -200,14 +198,14 @@ public class Game {
         if (this.turn == 1) {
             // if is first move
             if (this.whiteTurns == 0) {
-                newMove = wAI.getFirstMove(Board.BOARD);
+                newMove = wAI.getFirstMove();
             } else {
                 newMove = wAI.getBestMove(Board.BOARD);
             }
         } else {
             // if is first move
             if (this.blackTurns == 0) {
-                newMove = bAI.getFirstMove(Board.BOARD);
+                newMove = bAI.getFirstMove();
             } else {
                 newMove = bAI.getBestMove(Board.BOARD);
             }

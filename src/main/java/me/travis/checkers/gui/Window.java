@@ -79,13 +79,14 @@ public class Window extends JFrame {
     public void redrawPieces() {
         if (this.PIECES.isEmpty()) return;
 
-        for (Piece piece : this.PIECES) {
-            this.remove(piece);
+        int c = 0;
+        for (Man[] men : Board.BOARD) {
+            for (Man man : men) {
+                this.PIECES.get(c).setImage(man.getImage());
+                this.PIECES.get(c).repaint();
+                c++;
+            }
         }
-
-        this.PIECES.clear();
-
-        this.drawPieces();
     }
 
     /**
@@ -99,19 +100,18 @@ public class Window extends JFrame {
         } else {
             Board.clearHighlights();
         }
-        this.refresh();
+        this.refresh(false);
     }
 
     /**
      * refreshes the board to draw the new pos of all the pieces
      */
     public void refresh(boolean hard) {
-        SwingUtilities.updateComponentTreeUI(this);
+        if (hard) {
+            SwingUtilities.updateComponentTreeUI(this);
+        }
         this.redrawPieces();
     }
 
-    public void refresh() {
-        SwingUtilities.updateComponentTreeUI(this);
-    }
 
 }

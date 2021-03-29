@@ -1,11 +1,10 @@
 package me.travis.checkers.ai;
 
-import me.travis.checkers.board.Board;
 import me.travis.checkers.board.Man;
 import me.travis.checkers.logic.Moves;
-import me.travis.checkers.util.Util;
 import me.travis.checkers.util.Pair;
 import me.travis.checkers.util.Tuple;
+import me.travis.checkers.util.Util;
 import me.travis.checkers.util.tree.Node;
 import me.travis.checkers.util.tree.Tree;
 
@@ -163,8 +162,8 @@ public class AI {
     /**
      * @return a random first move (to keep it interesting)
      */
-    public Node getFirstMove(Man[][] currentState) {
-        this.repopulate(currentState);
+    public Node getFirstMove() {
+        this.populate();
         if (this.isTerminal(this.tree.getRoot())) {
             System.out.println("NO CHILDREN, NOT GOOD");
             return null;

@@ -13,7 +13,7 @@ import java.awt.image.BufferedImage;
  */
 public class Piece extends JPanel implements MouseListener {
 
-    private final BufferedImage image;
+    private BufferedImage image;
     private final int team;
 
     public Piece(BufferedImage image, int x, int y, int team) {
@@ -22,6 +22,10 @@ public class Piece extends JPanel implements MouseListener {
         this.team = team;
         this.setPos(x, y);
         this.addMouseListener(this);
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
     }
 
     public void setPos(int x, int y) {
