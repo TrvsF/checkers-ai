@@ -1,6 +1,5 @@
 package me.travis.checkers;
 
-import me.travis.checkers.ai.AI;
 import me.travis.checkers.gui.Window;
 import me.travis.checkers.util.BoardUtil;
 
@@ -10,11 +9,11 @@ import me.travis.checkers.util.BoardUtil;
  */
 public class Checkers {
 
+    // Window (GUI) object
     private static Window WINDOW;
 
+    // Game object
     private static Game GAME;
-
-    private static AI AI;
 
     public static void main(String[] args) {
 
@@ -23,15 +22,18 @@ public class Checkers {
         BoardUtil.printDebugBoard();
 
         System.out.println("CREATING GUI...");
+        // init gui
         WINDOW = new Window();
 
         // 0 = pvp
         // 1 = pva
         // 2 = ava
-        int mode = 1;
-        System.out.println("SETTING UP GAME IN MODE : " + mode);
-        GAME = new Game(mode);
+        // TODO : MAKE THIS AN INPUT OR SOMETHING
+        int mode = 0;
 
+        System.out.println("SETTING UP GAME IN MODE : " + mode);
+        // init game
+        GAME = new Game(mode);
         WINDOW.refresh(true);
         WINDOW.refresh();
 

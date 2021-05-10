@@ -7,6 +7,8 @@ import me.travis.checkers.logic.Misc;
 import me.travis.checkers.logic.Moves;
 import me.travis.checkers.util.BoardUtil;
 import me.travis.checkers.util.Tuple;
+import me.travis.checkers.util.Util;
+import me.travis.checkers.util.tree.Node;
 
 import java.util.List;
 
@@ -14,7 +16,13 @@ public class Game {
 
     private int turn;
 
+    private int whiteTurns;
+    private int blackTurns;
+
     private int[] selectedMan;
+
+    private final AI wAI;
+    private final AI bAI;
 
     private final boolean whiteAI;
     private final boolean blackAI;
@@ -41,7 +49,24 @@ public class Game {
 
         this.whiteAI = (mode == 2);
         this.blackAI = (mode == 1 || mode == 2);
+        this.whiteAI = (mode == 2);
+
+        this.blackTurns = 0;
+        this.whiteTurns = 0;
+
         this.gameOver = false;
+
+        if (this.blackAI) {
+            bAI = new AI(2, -1);
+        } else {
+            bAI = null;
+        }
+
+        if (this.whiteAI) {
+            wAI = new AI(2, 1);
+        } else {
+            wAI = null;
+        }
 
         Board.resetBoard();
     }
@@ -109,12 +134,16 @@ public class Game {
 
         // for each new place to highlight
         for (Tuple<Integer, Integer, List<Man>> tuple : moves) {
+
             // update the board to display the new highlights
             if (tuple.getElement3() != null) {
+
                 Board.BOARD[tuple.getElement1()][tuple.getElement2()].makeDeadlyHighlight(tuple.getElement3());
+
                 // clears of the normal highlights as you HAVE to jump if given the option
                 Checkers.getWindow().clearHighlights(false);
                 shouldRenderNonDeadly = false;
+
             } else if (shouldRenderNonDeadly) {
                 Board.BOARD[tuple.getElement1()][tuple.getElement2()].makeHighlight();
             }
@@ -122,7 +151,6 @@ public class Game {
 
         // refresh the GUI
         Checkers.getWindow().refresh(true);
-
         BoardUtil.printDebugBoard();
     }
 
@@ -137,11 +165,21 @@ public class Game {
             System.out.println("GAME OVER");
         }
 
+        // increase the turn counter
+        if (this.turn == 1) {
+            this.whiteTurns++;
+        } else {
+            this.blackTurns++;
+        }
+
+        // swap whos turn it is
         this.turn *= -1;
 
+        // white
         if (this.turn == 1) {
             Checkers.getWindow().setSubTitle("White's Turn");
 
+            // do white ai
             if (whiteAI) {
                 AI ai = new AI(3, 1);
                 ai.populate();
@@ -151,9 +189,11 @@ public class Game {
             }
         }
 
+        // black
         if (this.turn == -1) {
             Checkers.getWindow().setSubTitle("Black's Turn");
 
+            // do black ai
             if (blackAI) {
                 AI ai = new AI(3, -1);
                 ai.populate();
@@ -162,6 +202,39 @@ public class Game {
                 this.nextTurn();
             }
         }
+    }
+
+    /**
+     * do the AI
+     */
+    private void doAI() {
+        // refresh the board
+        Checkers.getWindow().refresh(true);
+
+        Node newMove;
+        // get the best move
+        if (this.turn == 1) {
+            // if is first move
+            if (this.whiteTurns == 0) {
+                newMove = wAI.getFirstMove();
+            } else {
+                newMove = wAI.getBestMove(Board.BOARD);
+            }
+        } else {
+            // if is first move
+            if (this.blackTurns == 0) {
+                newMove = bAI.getFirstMove();
+            } else {
+                newMove = bAI.getBestMove(Board.BOARD);
+            }
+        }
+
+        // update board to best move
+        Board.BOARD = newMove.getValue();
+
+        // refresh the board
+        Checkers.getWindow().refresh(true);
+        this.nextTurn();
     }
 
     /**
@@ -190,6 +263,13 @@ public class Game {
      */
     private void clearSelection() {
         this.selectedMan = null;
+    }
+
+    /**
+     * @return the ammount of turns that has occurred so for in the game
+     */
+    private int getTotalTurns() {
+        return this.whiteTurns + this.blackTurns;
     }
 
 }

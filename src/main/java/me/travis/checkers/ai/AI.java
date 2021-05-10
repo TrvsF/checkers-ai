@@ -6,6 +6,7 @@ import me.travis.checkers.logic.Moves;
 import me.travis.checkers.util.BoardUtil;
 import me.travis.checkers.util.Pair;
 import me.travis.checkers.util.Tuple;
+import me.travis.checkers.util.Util;
 import me.travis.checkers.util.tree.Node;
 import me.travis.checkers.util.tree.Tree;
 
@@ -22,20 +23,14 @@ public class AI {
     private Tree tree;
     private final int team;
     private final int depth;
-    private int children;
 
     public AI(int depth, int team) {
         this.depth = depth;
         this.team = team;
-        this.children = 0;
     }
 
     public Tree getTree() {
         return this.tree;
-    }
-
-    public int getChildren() {
-        return this.children;
     }
 
     /**
@@ -50,7 +45,6 @@ public class AI {
 
         Node root = new Node(BoardUtil.cloneBoard(), this.team);
         this.tree = new Tree(root);
-        this.children = 0;
 
         this.alreadySeen.clear();
 
@@ -92,13 +86,27 @@ public class AI {
         }
     }
 
-    public Node getNode(int childNo) {
-        return this.tree.getRoot().getChildren().get(childNo);
+    /**
+     * repopulates the tree from a given node
+     * @param node the node to repopulate from
+     */
+    public void repopulate(Node node) {
+        this.tree.setRoot(node);
+        this.repopulateR(node, this.depth);
     }
 
-    public int countChildren() {
-        if (this.tree.getRoot() == null) return 0;
-        return this.countChildrenR(this.tree.getRoot(), 0);
+    /**
+     * repopulates the tree from the root of a given board state
+     * @param b the give board state
+     */
+    public void repopulate(Man[][] b) {
+        for (Node node : this.tree.getRoot().getChildren()) {
+            if (Util.isArrayEqual(node.getValue(), b)) {
+                this.tree.setRoot(new Node(node));
+                this.repopulateR(node, this.depth);
+                return;
+            }
+        }
     }
 
     private int countChildrenR(Node node, int count) {
@@ -106,11 +114,11 @@ public class AI {
         for (Node child : node.getChildren()) {
             countChildrenR(child, count + 1);
         }
-        return count;
+
     }
 
     /**
-     * the min max method with AB pruning to ease memory useage, a better explanation of what this does
+     * the min max method with AB pruning to ease memory usage, a better explanation of what this does
      * can be found in the paperwork
      * @param node Node to check
      * @param depth Depth of the current pass
@@ -122,7 +130,7 @@ public class AI {
         if (depth <= 0 || isTerminal(node)) {
             return node.rate();
         }
-        if (node.getTeam() == 1) {
+        if (node.getTeam() == this.team) {
             int currentA = Integer.MIN_VALUE;
             for (Node child : node.getChildren()) {
                 currentA = Math.max(currentA, minMaxAB(child, depth - 1, a, b));
@@ -145,23 +153,39 @@ public class AI {
     }
 
     /**
+     * @return a random first move (to keep it interesting)
+     */
+    public Node getFirstMove() {
+        this.populate();
+        if (this.isTerminal(this.tree.getRoot())) {
+            System.out.println("NO CHILDREN, NOT GOOD");
+            return null;
+        }
+        return Util.getRandomMove(this.tree.getRoot().getChildren());
+    }
+
+    /**
      * get the best move
      * @return The Board state of the best move
      */
-    public Man[][] getBestMove() {
-        if (isTerminal(this.tree.getRoot())) {
+    public Node getBestMove(Man[][] currentState) {
+        // repopulate the tree
+        this.repopulate(currentState);
+
+        if (this.isTerminal(this.tree.getRoot())) {
             System.out.println("NO CHILDREN, GAME SHOULD BE OVER");
             return null;
         }
-        Man[][] bestMove = null;
-        int bestScore = Integer.MIN_VALUE;
+        Node bestMove = null;
+        int bestRating = Integer.MIN_VALUE;
         for (Node child : this.tree.getRoot().getChildren()) {
-            int a = minMaxAB(child, this.depth, bestScore, Integer.MAX_VALUE);
-            if (a > bestScore || bestMove == null) {
-                bestMove = child.getValue();
-                bestScore = a;
+            int a = minMaxAB(child, this.depth, bestRating, Integer.MAX_VALUE);
+            if (a > bestRating || bestMove == null) {
+                bestMove = child;
+                bestRating = a;
             }
         }
+        System.out.println("BEST MOVE HAS A RATING OF : " + bestRating);
         return bestMove;
     }
 
