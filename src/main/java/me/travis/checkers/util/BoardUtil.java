@@ -3,6 +3,8 @@ package me.travis.checkers.util;
 import me.travis.checkers.board.Board;
 import me.travis.checkers.board.Man;
 
+import java.util.List;
+
 public class BoardUtil {
 
     /**
@@ -21,6 +23,27 @@ public class BoardUtil {
             }
         }
         return clone;
+    }
+
+    public static boolean isSame(List<Man[][]> list, Man[][] array) {
+        for (Man[][] man : list) {
+            if (isSame(man, array)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isSame(Man[][] b1, Man[][] b2) {
+        if (b1.length != b2.length) return false;
+        for (int i = 0; i < b1.length; i++) {
+            for (int j = 0; j < b1[i].length; j++) {
+                if (!(b1[i][j].getTeam() == b2[i][j].getTeam())) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**

@@ -13,12 +13,12 @@ import java.io.IOException;
  */
 public class Title extends JPanel {
 
-    private final Border BORDER = BorderFactory.createLineBorder(new Color(0x000000), 5);
     private BufferedImage TITLE;
 
     public Title() {
         this.setImage();
-        this.setBounds(440, 20, 480, 120);
+        this.setBounds(55, 20, 480, 120);
+        Border BORDER = BorderFactory.createLineBorder(new Color(0x000000), 5);
         this.setBorder(BORDER);
     }
 

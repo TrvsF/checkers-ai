@@ -13,8 +13,8 @@ import java.awt.image.BufferedImage;
  */
 public class Piece extends JPanel implements MouseListener {
 
-    private final BufferedImage image;
-    private final int team;
+    private BufferedImage image;
+    private int team;
 
     public Piece(BufferedImage image, int x, int y, int team) {
         this.setOpaque(false); // so the png works (why isn't this enabled by default??)
@@ -32,6 +32,18 @@ public class Piece extends JPanel implements MouseListener {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(image, 0, 0, this);
+    }
+
+    public BufferedImage getImage() {
+        return this.image;
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
+    }
+
+    public void setTeam(int team) {
+        this.team = team;
     }
 
     /**

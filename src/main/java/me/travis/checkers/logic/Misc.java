@@ -10,7 +10,7 @@ import java.util.Random;
  */
 public class Misc {
 
-    private static Random random = new Random();
+    private static final Random random = new Random();
 
     /**
      * converts a given gui x and y to the location that represents on the play board

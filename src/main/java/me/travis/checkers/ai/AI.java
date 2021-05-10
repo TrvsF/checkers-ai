@@ -9,12 +9,15 @@ import me.travis.checkers.util.Tuple;
 import me.travis.checkers.util.tree.Node;
 import me.travis.checkers.util.tree.Tree;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * handles the AI portion of the program
  */
 public class AI {
+
+    private final List<Man[][]> alreadySeen = new ArrayList<>();
 
     private Tree tree;
     private final int team;
@@ -39,7 +42,6 @@ public class AI {
      * populates a tree of all valid moves to a certain depth
      */
     public void populate() {
-
         System.out.println("STARTING POPULATION WITH DEPTH : " + this.depth + "\nFOR TEAM : " + this.team);
 
         System.out.println("STARTING BOARD : ");
@@ -49,6 +51,8 @@ public class AI {
         Node root = new Node(BoardUtil.cloneBoard(), this.team);
         this.tree = new Tree(root);
         this.children = 0;
+
+        this.alreadySeen.clear();
 
         this.populateR(0, root, this.team);
     }
@@ -62,21 +66,23 @@ public class AI {
     private void populateR(int depth, Node parent, int team) {
         // don't want to go too far for memory & processing sake
         if (this.depth <= depth) return;
-
         // checks each piece of the board
         for (int i = 0; i < parent.getValue().length; i++) {
             for (int j = 0; j < parent.getValue()[i].length; j++) {
-
                 Man man = parent.getValue()[i][j];
                 // if the piece is apart of the AIs team
                 if (man.getTeam() == team) {
-
                     // if the piece can move add all these moves as branches to the tree and recursively make new
                     // branches from these branches (its 7am pls)
-                    List<Tuple<Integer, Integer, List<Pair<Integer, Integer>>>> listOfMoves = Moves.getMovesAI(i, j, parent.getValue());
-
-                    for (Tuple<Integer, Integer, List<Pair<Integer, Integer>>> tuple : listOfMoves) {
-                        Node child = new Node(Moves.simMovePieces(i, j, tuple.getElement1(), tuple.getElement2(), tuple.getElement3(), parent.getValue()), this.team);
+                    for (Tuple<Integer, Integer, List<Pair<Integer, Integer>>> tuple : Moves.getMovesAI(
+                            i, j, parent.getValue())) {
+                        Node child = new Node(Moves.simMovePieces(i, j, tuple.getElement1(), tuple.getElement2(),
+                                tuple.getElement3(), parent.getValue()), this.team);
+                        if (BoardUtil.isSame(alreadySeen, child.getValue())) {
+                            System.out.println("SEEN");
+                            break;
+                        }
+                        alreadySeen.add(BoardUtil.cloneBoard(child.getValue()));
                         parent.addChild(child);
                         this.children++;
                         this.populateR(depth + 1, child, team * -1);
@@ -98,7 +104,7 @@ public class AI {
     private int countChildrenR(Node node, int count) {
         if (node.getChildren() == null) return 0;
         for (Node child : node.getChildren()) {
-            countChildrenR(child, count++);
+            countChildrenR(child, count + 1);
         }
         return count;
     }

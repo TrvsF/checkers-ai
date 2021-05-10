@@ -27,7 +27,7 @@ public class Window extends JFrame {
     public Window() {
         this.drawPieces();
         this.add(new Title());
-        //this.add(new VBoard());
+        this.add(new VBoard());
         this.initWindow();
     }
 
@@ -36,7 +36,7 @@ public class Window extends JFrame {
      * also sets the window title, its background, the icon etc
      */
     private void initWindow() {
-        this.setSize(1280, 720);
+        this.setSize(1080, 720);
         this.setResizable(false);
         this.setLayout(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -79,13 +79,16 @@ public class Window extends JFrame {
     public void redrawPieces() {
         if (this.PIECES.isEmpty()) return;
 
-        for (Piece piece : this.PIECES) {
-            this.remove(piece);
+        int c = -1;
+        for (Man[] men : Board.BOARD) {
+            for (Man man : men) {
+                c++;
+                if (PIECES.get(c).getImage() == man.getImage()) continue;
+                this.PIECES.get(c).setImage(man.getImage());
+                this.PIECES.get(c).setTeam(man.getTeam());
+                this.PIECES.get(c).repaint();
+            }
         }
-
-        this.PIECES.clear();
-
-        this.drawPieces();
     }
 
     /**
@@ -99,7 +102,6 @@ public class Window extends JFrame {
         } else {
             Board.clearHighlights();
         }
-        this.refresh();
     }
 
     /**

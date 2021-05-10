@@ -143,10 +143,9 @@ public class Game {
             Checkers.getWindow().setSubTitle("White's Turn");
 
             if (whiteAI) {
-                AI ai = new AI(1, 1);
+                AI ai = new AI(3, 1);
                 ai.populate();
                 Board.BOARD = (this.whiteFirstTurn ? ai.getRandomMove() : ai.getBestMove());
-                Checkers.getWindow().refresh(true);
                 this.checkFirstTurn();
                 this.nextTurn();
             }
@@ -156,10 +155,9 @@ public class Game {
             Checkers.getWindow().setSubTitle("Black's Turn");
 
             if (blackAI) {
-                AI ai = new AI(1, -1);
+                AI ai = new AI(3, -1);
                 ai.populate();
                 Board.BOARD = (this.blackFirstTurn ? ai.getRandomMove() : ai.getBestMove());
-                Checkers.getWindow().refresh(true);
                 this.checkFirstTurn();
                 this.nextTurn();
             }
@@ -170,9 +168,10 @@ public class Game {
      * ensures the board is ready for the next turn
      */
     private void boardCheck() {
+        gameOver = Board.shouldGameFinish();
+        if (gameOver) return;
         Board.checkKings();
         Board.clearAllHighlights();
-        gameOver = Board.shouldGameFinish();
         Checkers.getWindow().refresh(true);
     }
 
