@@ -1,7 +1,7 @@
 package me.travis.checkers;
 
 import me.travis.checkers.gui.Window;
-import me.travis.checkers.util.Util;
+import me.travis.checkers.util.BoardUtil;
 
 /**
  * main class of the program
@@ -18,7 +18,7 @@ public class Checkers {
 
         System.out.println("STARTING CHECKERS...");
 
-        Util.printDebugBoard();
+        BoardUtil.printDebugBoard();
 
         System.out.println("CREATING GUI...");
         // init gui
@@ -33,10 +33,8 @@ public class Checkers {
         System.out.println("SETTING UP GAME IN MODE : " + mode);
         // init game
         GAME = new Game(mode);
-
-        // ensure all pieces are correctly rendered
         WINDOW.refresh(true);
-        WINDOW.refresh(false);
+        WINDOW.refresh();
 
     }
 

@@ -52,49 +52,37 @@ public class Node {
 
     public int rate() {
         int score = 0;
-
         for (int i = 0; i < this.value.length; i++) {
             for (int j = 0; j < value[i].length; j++) {
-
                 Man man = value[i][j];
-
                 // we dont really care about blank pieces
                 if (man.getTeam() == 0) continue;
-
                 // if piece is apart of AI's team
                 if (man.getTeam() == this.team) {
-
                     score += 10;
-
                     // if the piece is progressing across the board rate higher
-                    if (this.team == -1 && i > 3 || this.team == 1 && i < 5) {
+                    if (this.team == -1 && i >= 4 || this.team == 1 && i <= 5) {
                         score += 2;
                     }
-
                     List<Tuple<Integer, Integer, List<Pair<Integer, Integer>>>> moves = Moves.getMovesAI(i, j, this.value);
-
                     if (!moves.isEmpty()) {
                         score += 1;
                         for (Tuple<Integer, Integer, List<Pair<Integer, Integer>>> tuple : moves) {
                             score += tuple.getElement3().size() * 5;
                         }
                     }
-
                 }
-
                 // if piece isn't apart of AI's team
                 if (man.getTeam() == this.team * -1) {
                     score -= 10;
-
                     // if the piece is progressing across the board rate higher
                     if (this.team == -1 && i < 3 || this.team == 1 && i > 5) {
                         score -= 2;
                     }
                 }
-
             }
         }
-
+        // times by the team so that black pieces are trying to min and white are trying to max
         return score;
     }
 

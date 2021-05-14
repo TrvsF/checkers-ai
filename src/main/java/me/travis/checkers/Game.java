@@ -5,6 +5,7 @@ import me.travis.checkers.board.Board;
 import me.travis.checkers.board.Man;
 import me.travis.checkers.logic.Misc;
 import me.travis.checkers.logic.Moves;
+import me.travis.checkers.util.BoardUtil;
 import me.travis.checkers.util.Tuple;
 import me.travis.checkers.util.Util;
 import me.travis.checkers.util.tree.Node;
@@ -25,6 +26,10 @@ public class Game {
 
     private final boolean whiteAI;
     private final boolean blackAI;
+
+    private boolean whiteFirstTurn;
+    private boolean blackFirstTurn;
+
     private boolean gameOver;
 
     /**
@@ -39,6 +44,10 @@ public class Game {
         this.turn = 1;
         this.selectedMan = null;
 
+        this.blackFirstTurn = true;
+        this.whiteFirstTurn = true;
+
+        this.whiteAI = (mode == 2);
         this.blackAI = (mode == 1 || mode == 2);
         this.whiteAI = (mode == 2);
 
@@ -98,6 +107,8 @@ public class Game {
             // refresh the window
             Checkers.getWindow().refresh(true);
 
+            this.checkFirstTurn();
+
             // move to the next turn
             this.nextTurn();
 
@@ -140,8 +151,7 @@ public class Game {
 
         // refresh the GUI
         Checkers.getWindow().refresh(true);
-
-        Util.printDebugBoard();
+        BoardUtil.printDebugBoard();
     }
 
     /**
@@ -171,7 +181,11 @@ public class Game {
 
             // do white ai
             if (whiteAI) {
-                this.doAI();
+                AI ai = new AI(3, 1);
+                ai.populate();
+                Board.BOARD = (this.whiteFirstTurn ? ai.getRandomMove() : ai.getBestMove());
+                this.checkFirstTurn();
+                this.nextTurn();
             }
         }
 
@@ -181,7 +195,11 @@ public class Game {
 
             // do black ai
             if (blackAI) {
-                this.doAI();
+                AI ai = new AI(3, -1);
+                ai.populate();
+                Board.BOARD = (this.blackFirstTurn ? ai.getRandomMove() : ai.getBestMove());
+                this.checkFirstTurn();
+                this.nextTurn();
             }
         }
     }
@@ -223,10 +241,21 @@ public class Game {
      * ensures the board is ready for the next turn
      */
     private void boardCheck() {
+        gameOver = Board.shouldGameFinish();
+        if (gameOver) return;
         Board.checkKings();
         Board.clearAllHighlights();
-        gameOver = Board.shouldGameFinish();
         Checkers.getWindow().refresh(true);
+    }
+
+    public void checkFirstTurn() {
+        if (this.turn == 1 && this.whiteFirstTurn) {
+            this.whiteFirstTurn = false;
+        }
+
+        if (this.turn == -1 && this.blackFirstTurn) {
+            this.blackFirstTurn =false;
+        }
     }
 
     /**
