@@ -83,10 +83,11 @@ public class Window extends JFrame {
         for (Man[] men : Board.BOARD) {
             for (Man man : men) {
                 c++;
-                if (PIECES.get(c).getImage() == man.getImage()) continue;
-                this.PIECES.get(c).setImage(man.getImage());
-                this.PIECES.get(c).setTeam(man.getTeam());
-                this.PIECES.get(c).repaint();
+                Piece piece = PIECES.get(c);
+                if (piece.getImage() == man.getImage() && !man.isKing()) continue;
+                piece.setImage(man.getImage());
+                piece.setTeam(man.getTeam());
+                piece.repaint();
             }
         }
     }

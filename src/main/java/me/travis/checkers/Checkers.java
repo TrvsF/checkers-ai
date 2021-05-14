@@ -21,9 +21,9 @@ public class Checkers {
         // 0 = pvp
         // 1 = pva
         // 2 = ava
-        int mode = 1;
+        int mode = 0;
         System.out.println("SETTING UP GAME IN MODE : " + mode);
-        GAME = new Game(mode, 3);
+        GAME = new Game(mode, 1);
 
         WINDOW.refresh(true);
         WINDOW.refresh();
