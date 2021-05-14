@@ -5,7 +5,6 @@ import me.travis.checkers.util.Util;
 
 /**
  * main class of the program
- * @author travis faulkner, began work on the 19th of November
  */
 public class Checkers {
 
