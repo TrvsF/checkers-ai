@@ -20,33 +20,22 @@ public class Node {
     private final List<Node> children;
 
     private final int team;
-    private int childrenCount;
-
-    public Node(Node node) {
-        this.value = node.getValue();
-        this.team = node.getTeam();
-        this.childrenCount = 0;
-        this.children = node.getChildren();
-    }
 
     public Node(Man[][] value, int team) {
         this.value = value;
         this.team = team;
-        this.childrenCount = 0;
         this.children = new ArrayList<>();
     }
 
     public Node(Man[][] value, int team, List<Node> children) {
         this.value = value;
         this.team = team;
-        this.childrenCount = 0;
         this.children = children;
     }
 
     public Node(Man[][] value, int team, Node... children) {
         this.value = value;
         this.team = team;
-        this.childrenCount = 0;
         this.children = Arrays.asList(children);
     }
 
@@ -88,11 +77,6 @@ public class Node {
 
     public void addChild(Node node) {
         children.add(node);
-        this.childrenCount++;
-    }
-
-    public int getChildrenCount() {
-        return this.childrenCount;
     }
 
     public Man[][] getValue() {

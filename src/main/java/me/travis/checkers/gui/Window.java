@@ -108,11 +108,14 @@ public class Window extends JFrame {
      * refreshes the board to draw the new pos of all the pieces
      */
     public void refresh(boolean hard) {
-        if (hard) {
-            SwingUtilities.updateComponentTreeUI(this);
-        }
+        System.out.println("refreshing... ");
+        SwingUtilities.updateComponentTreeUI(this);
         this.redrawPieces();
     }
 
+    public void refresh() {
+        System.out.println("refreshing... ");
+        SwingUtilities.updateComponentTreeUI(this);
+    }
 
 }

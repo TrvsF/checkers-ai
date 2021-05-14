@@ -2,6 +2,7 @@ package me.travis.checkers.board;
 
 /**
  * class for holding all the information on the board, including the board itself
+ * this doesn't really *have* to be a class, but its a lot nicer to have the board object in its own space
  */
 public class Board {
 

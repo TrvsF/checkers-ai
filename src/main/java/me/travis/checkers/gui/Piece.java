@@ -24,10 +24,6 @@ public class Piece extends JPanel implements MouseListener {
         this.addMouseListener(this);
     }
 
-    public void setImage(BufferedImage image) {
-        this.image = image;
-    }
-
     public void setPos(int x, int y) {
         this.setBounds(x, y, 50, 50);
     }
