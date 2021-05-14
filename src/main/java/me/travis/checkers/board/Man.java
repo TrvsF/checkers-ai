@@ -1,5 +1,7 @@
 package me.travis.checkers.board;
 
+import me.travis.checkers.Checkers;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -14,7 +16,6 @@ public class Man {
 
     private int team;
     private boolean isKing;
-    private String colourPath;
     private BufferedImage image;
 
     public List<Man> piecesToKill;
@@ -22,43 +23,36 @@ public class Man {
     public Man(int team) {
         this.team = team;
         this.isKing = false;
-        this.setColourPath();
+        this.setImage();
     }
 
     public Man(Man man) {
         this.team = man.getTeam();
         this.isKing = man.isKing();
-        this.setColourPath();
+        this.setImage();
     }
 
     /**
      * sets the image of the man
      */
     private void setImage() {
-        BufferedImage img;
-        try {
-            img = ImageIO.read(new File("src/main/resources/" + this.colourPath + ".png"));
-        } catch (IOException exception) {
-            System.out.println("ERROR LOADING PIECE - TRAVIS PLEASE : " + exception);
-            img = null;
-        }
-        this.image = img;
-    }
-
-    /**
-     * sets the path of the image to whatever image should be displayed based on team
-     */
-    private void setColourPath() {
         if (this.team == 1) {
-            this.colourPath = "white";
+            if (this.isKing) {
+                this.image = Checkers.whiteKing;
+                return;
+            }
+            this.image = Checkers.white;
         } else if (this.team == -1) {
-            this.colourPath = "black";
+            if (this.isKing) {
+                this.image = Checkers.blackKing;
+                return;
+            }
+            this.image = Checkers.black;
         } else if (this.team >= 9) {
-            this.colourPath = "highlight";
+            this.image = Checkers.highlight;
         } else {
-            this.colourPath = "blank";
+            this.image = Checkers.blank;
         }
-        this.setImage();
     }
 
     /**
@@ -93,7 +87,6 @@ public class Man {
      * set isKing to true
      */
     public void makeKing() {
-        this.colourPath += "_k";
         this.isKing = true;
         this.setImage();
     }
@@ -104,7 +97,7 @@ public class Man {
     public void makeNull() {
         this.team = 0;
         this.isKing = false;
-        this.setColourPath();
+        this.setImage();
     }
 
     /**
@@ -113,14 +106,14 @@ public class Man {
     public void makeHighlight() {
         this.team = 9;
         this.isKing = false;
-        this.setColourPath();
+        this.setImage();
     }
 
     public void makeDeadlyHighlight(List<Man> piecesToKill) {
         this.piecesToKill = piecesToKill;
         this.team = 10;
         this.isKing = false;
-        this.setColourPath();
+        this.setImage();
     }
 
 }

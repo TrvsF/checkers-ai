@@ -1,5 +1,7 @@
 package me.travis.checkers.gui;
 
+import me.travis.checkers.Checkers;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -12,29 +14,17 @@ import java.io.IOException;
  */
 public class VBoard extends JLayeredPane {
 
-    private BufferedImage BOARD;
+    private final BufferedImage board;
 
     public VBoard() {
-        this.setImage();
+        this.board = Checkers.board;
         this.setBounds(40, 160, 500, 500);
-    }
-
-    // sets the image to board.png, will draw nothing if there is an error loading
-    private void setImage() {
-        BufferedImage board;
-        try {
-            board = ImageIO.read(new File("src/main/resources/board.png"));
-        } catch (IOException ignored) {
-            System.out.println("ERROR LOADING BOARD");
-            board = null;
-        }
-        this.BOARD = board;
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(BOARD, 0, 0, this);
+        g.drawImage(board, 0, 0, this);
     }
 
 }

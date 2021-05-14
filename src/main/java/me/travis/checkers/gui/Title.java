@@ -1,5 +1,7 @@
 package me.travis.checkers.gui;
 
+import me.travis.checkers.Checkers;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -13,31 +15,18 @@ import java.io.IOException;
  */
 public class Title extends JPanel {
 
-    private BufferedImage TITLE;
+    private final BufferedImage title = Checkers.banner;
 
     public Title() {
-        this.setImage();
         this.setBounds(55, 20, 480, 120);
         Border BORDER = BorderFactory.createLineBorder(new Color(0x000000), 5);
         this.setBorder(BORDER);
     }
 
-    // sets the image to title.png, will draw nothing if there is an error loading
-    private void setImage() {
-        BufferedImage title;
-        try {
-            title = ImageIO.read(new File("src/main/resources/title.png"));
-        } catch (IOException ignored) {
-            System.out.println("ERROR LOADING BOARD");
-            title = null;
-        }
-        this.TITLE = title;
-    }
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(TITLE, 0, 0, this);
+        g.drawImage(title, 0, 0, this);
     }
 
 }
