@@ -23,7 +23,7 @@ public class Checkers {
         // 2 = ava
         int mode = 1;
         System.out.println("SETTING UP GAME IN MODE : " + mode);
-        GAME = new Game(mode);
+        GAME = new Game(mode, 3);
 
         WINDOW.refresh(true);
         WINDOW.refresh();

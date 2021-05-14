@@ -42,11 +42,9 @@ public class AI {
      * populates a tree of all valid moves to a certain depth
      */
     public void populate() {
+        long startTime = System.currentTimeMillis();
+
         System.out.println("STARTING POPULATION WITH DEPTH : " + this.depth + "\nFOR TEAM : " + this.team);
-
-        System.out.println("STARTING BOARD : ");
-
-        BoardUtil.printDebugBoard(BoardUtil.cloneBoard());
 
         Node root = new Node(BoardUtil.cloneBoard(), this.team);
         this.tree = new Tree(root);
@@ -55,6 +53,8 @@ public class AI {
         this.alreadySeen.clear();
 
         this.populateR(0, root, this.team);
+
+        System.out.println("Population took " + (System.currentTimeMillis() - startTime) + "ms");
     }
 
     /**
@@ -76,14 +76,17 @@ public class AI {
                     // branches from these branches (its 7am pls)
                     for (Tuple<Integer, Integer, List<Pair<Integer, Integer>>> tuple : Moves.getMovesAI(
                             i, j, parent.getValue())) {
+                        long startTime = System.currentTimeMillis();
                         Node child = new Node(Moves.simMovePieces(i, j, tuple.getElement1(), tuple.getElement2(),
                                 tuple.getElement3(), parent.getValue()), this.team);
+                        System.out.println("Child " + (System.currentTimeMillis() - startTime) + "ms");
                         if (BoardUtil.isSame(alreadySeen, child.getValue())) {
                             System.out.println("SEEN");
                             break;
                         }
                         alreadySeen.add(BoardUtil.cloneBoard(child.getValue()));
                         parent.addChild(child);
+                        System.out.println("Children in " + (System.currentTimeMillis() - startTime) + "ms");
                         this.children++;
                         this.populateR(depth + 1, child, team * -1);
                     }
@@ -153,6 +156,7 @@ public class AI {
             System.out.println("NO CHILDREN, GAME SHOULD BE OVER");
             return null;
         }
+        long startTime = System.currentTimeMillis();
         Man[][] bestMove = null;
         int bestScore = Integer.MIN_VALUE;
         for (Node child : this.tree.getRoot().getChildren()) {
@@ -162,6 +166,7 @@ public class AI {
                 bestScore = a;
             }
         }
+        System.out.println("Traversal took " + (System.currentTimeMillis() - startTime) + "ms");
         return bestMove;
     }
 

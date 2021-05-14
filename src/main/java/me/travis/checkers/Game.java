@@ -12,6 +12,7 @@ import java.util.List;
 
 public class Game {
 
+    private final int depth;
     private int turn;
 
     private int[] selectedMan;
@@ -32,8 +33,9 @@ public class Game {
      * if mode is 2 it is ai vs ai
      * @param mode what mode the game is going to be played in
      */
-    public Game(int mode) {
+    public Game(int mode, int depth) {
         this.turn = 1;
+        this.depth = depth;
         this.selectedMan = null;
 
         this.blackFirstTurn = true;
@@ -122,8 +124,6 @@ public class Game {
 
         // refresh the GUI
         Checkers.getWindow().refresh(true);
-
-        BoardUtil.printDebugBoard();
     }
 
     /**
@@ -143,7 +143,7 @@ public class Game {
             Checkers.getWindow().setSubTitle("White's Turn");
 
             if (whiteAI) {
-                AI ai = new AI(1, 1);
+                AI ai = new AI(this.depth, 1);
                 ai.populate();
                 Board.BOARD = (this.whiteFirstTurn ? ai.getRandomMove() : ai.getBestMove());
                 this.checkFirstTurn();
@@ -155,7 +155,7 @@ public class Game {
             Checkers.getWindow().setSubTitle("Black's Turn");
 
             if (blackAI) {
-                AI ai = new AI(1, -1);
+                AI ai = new AI(this.depth, -1);
                 ai.populate();
                 Board.BOARD = (this.blackFirstTurn ? ai.getRandomMove() : ai.getBestMove());
                 this.checkFirstTurn();
