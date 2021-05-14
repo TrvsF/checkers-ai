@@ -56,18 +56,18 @@ public class BoardUtil {
      */
     public static Man[][] cloneBoard(Man[][] board) {
         long startTime = System.currentTimeMillis();
-        Cloner cloner = new Cloner();
-        System.out.println("Cloning took " + (System.currentTimeMillis() - startTime) + "ms");
-        return cloner.deepClone(board);
-//        Man[][] clone = new Man[10][];
-//        for (int i = 0; i < board.length; i++) {
-//            clone[i] = new Man[10];
-//            for (int j = 0; j < clone[i].length; j++) {
-//                clone[i][j] = new Man(board[i][j]);
-//            }
-//        }
+//        Cloner cloner = new Cloner();
 //        System.out.println("Cloning took " + (System.currentTimeMillis() - startTime) + "ms");
-//        return clone;
+//        return cloner.deepClone(board);
+        Man[][] clone = new Man[10][];
+        for (int i = 0; i < board.length; i++) {
+            clone[i] = new Man[10];
+            for (int j = 0; j < clone[i].length; j++) {
+                clone[i][j] = new Man(board[i][j]);
+            }
+        }
+        System.out.println("Cloning took " + (System.currentTimeMillis() - startTime) + "ms");
+        return clone;
     }
 
     /**
