@@ -44,7 +44,7 @@ public class AI {
     public void populate() {
         long startTime = System.currentTimeMillis();
 
-        System.out.println("STARTING POPULATION WITH DEPTH : " + this.depth + "\nFOR TEAM : " + this.team);
+        System.out.println("Starting tree population @ time " + startTime);
 
         Node root = new Node(BoardUtil.cloneBoard(), this.team);
         this.tree = new Tree(root);
@@ -54,7 +54,7 @@ public class AI {
 
         this.populateR(0, root, this.team);
 
-        System.out.println("Population took " + (System.currentTimeMillis() - startTime) + "ms");
+        System.out.println("Population took : " + (System.currentTimeMillis() - startTime) + "ms");
     }
 
     /**
@@ -76,17 +76,13 @@ public class AI {
                     // branches from these branches (its 7am pls)
                     for (Tuple<Integer, Integer, List<Pair<Integer, Integer>>> tuple : Moves.getMovesAI(
                             i, j, parent.getValue())) {
-                        long startTime = System.currentTimeMillis();
                         Node child = new Node(Moves.simMovePieces(i, j, tuple.getElement1(), tuple.getElement2(),
                                 tuple.getElement3(), parent.getValue()), this.team);
-                        System.out.println("Child " + (System.currentTimeMillis() - startTime) + "ms");
                         if (BoardUtil.isSame(alreadySeen, child.getValue())) {
-                            System.out.println("SEEN");
                             break;
                         }
                         alreadySeen.add(BoardUtil.cloneBoard(child.getValue()));
                         parent.addChild(child);
-                        System.out.println("Children in " + (System.currentTimeMillis() - startTime) + "ms");
                         this.children++;
                         this.populateR(depth + 1, child, team * -1);
                     }

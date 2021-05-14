@@ -255,7 +255,6 @@ public class Moves {
      * @param y2 end Y
      */
     public static Man[][] simMovePieces(int x1, int y1, int x2, int y2, List<Pair<Integer, Integer>> kills, Man[][] board) {
-        long startTime = System.currentTimeMillis();
         Man[][] boardClone = BoardUtil.cloneBoard(board);
 
         Man temp = new Man(boardClone[x1][y1]);
@@ -268,7 +267,6 @@ public class Moves {
             }
         }
 
-        System.out.println("Sim move in " + (System.currentTimeMillis() - startTime) + "ms");
         return boardClone;
     }
 

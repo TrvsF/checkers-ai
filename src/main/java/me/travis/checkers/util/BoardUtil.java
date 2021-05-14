@@ -55,7 +55,6 @@ public class BoardUtil {
      * @return clone of board
      */
     public static Man[][] cloneBoard(Man[][] board) {
-        long startTime = System.currentTimeMillis();
 //        Cloner cloner = new Cloner();
 //        System.out.println("Cloning took " + (System.currentTimeMillis() - startTime) + "ms");
 //        return cloner.deepClone(board);
@@ -66,7 +65,6 @@ public class BoardUtil {
                 clone[i][j] = new Man(board[i][j]);
             }
         }
-        System.out.println("Cloning took " + (System.currentTimeMillis() - startTime) + "ms");
         return clone;
     }
 
