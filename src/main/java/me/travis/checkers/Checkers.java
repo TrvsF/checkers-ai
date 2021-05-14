@@ -44,7 +44,7 @@ public class Checkers {
         // 2 = ava
         int mode = 1;
         System.out.println("SETTING UP GAME IN MODE : " + mode);
-        GAME = new Game(mode, 1);
+        GAME = new Game(mode, 3);
         System.out.println("DONE");
 
         WINDOW.refresh(true);
