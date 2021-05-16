@@ -79,7 +79,7 @@ public class AI {
                         Node child = new Node(Moves.simMovePieces(i, j, tuple.getElement1(), tuple.getElement2(),
                                 tuple.getElement3(), parent.getValue()), this.team);
                         if (BoardUtil.isSame(alreadySeen, child.getValue())) {
-                            break;
+                            continue;
                         }
                         alreadySeen.add(BoardUtil.cloneBoard(child.getValue()));
                         parent.addChild(child);
