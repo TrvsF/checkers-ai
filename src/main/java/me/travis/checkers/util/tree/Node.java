@@ -39,10 +39,16 @@ public class Node {
         this.children = Arrays.asList(children);
     }
 
+    /**
+     * Rates the given node based on pos, moves and how many pieces a given team has
+     * (pos = better | neg = worse)
+     * @return a rating of a given node
+     */
     public int rate() {
-        int score = 0;
+        int totalScore = 0;
         for (int i = 0; i < this.value.length; i++) {
             for (int j = 0; j < value[i].length; j++) {
+                int score = 0;
                 Man man = value[i][j];
                 // we dont really care about blank pieces
                 if (man.getTeam() == 0) continue;
@@ -51,13 +57,13 @@ public class Node {
                     score += 10;
                     // if the piece is progressing across the board rate higher
                     if (this.team == -1 && i >= 4 || this.team == 1 && i <= 5) {
-                        score += 2;
+                        score += 3;
                     }
                     List<Tuple<Integer, Integer, List<Pair<Integer, Integer>>>> moves = Moves.getMovesAI(i, j, this.value);
                     if (!moves.isEmpty()) {
                         score += 1;
                         for (Tuple<Integer, Integer, List<Pair<Integer, Integer>>> tuple : moves) {
-                            score += tuple.getElement3().size() * 5;
+                            score += tuple.getElement3().size() * 3;
                         }
                     }
                 }
@@ -66,13 +72,20 @@ public class Node {
                     score -= 10;
                     // if the piece is progressing across the board rate higher
                     if (this.team == -1 && i < 3 || this.team == 1 && i > 5) {
-                        score -= 2;
+                        score -= 3;
+                    }
+                    List<Tuple<Integer, Integer, List<Pair<Integer, Integer>>>> moves = Moves.getMovesAI(i, j, this.value);
+                    if (!moves.isEmpty()) {
+                        score -= 1;
+                        for (Tuple<Integer, Integer, List<Pair<Integer, Integer>>> tuple : moves) {
+                            score -= tuple.getElement3().size() * 3;
+                        }
                     }
                 }
+                totalScore += score;
             }
         }
-        // times by the team so that black pieces are trying to min and white are trying to max
-        return score;
+        return totalScore;
     }
 
     public void addChild(Node node) {
