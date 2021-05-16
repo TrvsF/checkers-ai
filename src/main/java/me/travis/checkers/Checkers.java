@@ -61,14 +61,18 @@ public class Checkers {
     }
 
     public static void initImages() throws IOException {
-        black = ImageIO.read(Objects.requireNonNull(classLoader.getResource("black.png")));
-        white = ImageIO.read(Objects.requireNonNull(classLoader.getResource("white.png")));
-        blackKing = ImageIO.read(Objects.requireNonNull(classLoader.getResource("black_k.png")));
-        whiteKing = ImageIO.read(Objects.requireNonNull(classLoader.getResource("white_k.png")));
-        banner = ImageIO.read(Objects.requireNonNull(classLoader.getResource("title.png")));
-        board = ImageIO.read(Objects.requireNonNull(classLoader.getResource("board.png")));
-        highlight = ImageIO.read(Objects.requireNonNull(classLoader.getResource("highlight.png")));
-        blank = ImageIO.read(Objects.requireNonNull(classLoader.getResource("blank.png")));
+        black = getImage("black.png");
+        white = getImage("white.png");
+        blackKing = getImage("black_k.png");
+        whiteKing = getImage("white_k.png");
+        banner = getImage("title.png");
+        board = getImage("board.png");
+        highlight = getImage("highlight.png");
+        blank = getImage("blank.png");
+    }
+
+    private static BufferedImage getImage(String string) throws IOException {
+        return ImageIO.read(Objects.requireNonNull(classLoader.getResource(string)));
     }
 
 }
